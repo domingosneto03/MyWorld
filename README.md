@@ -3,8 +3,8 @@
 ## Group T0xG0y
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201901010 | ...                |
-| Jane Doe         | 201901011 | ...                |
+| José Luíz        | 202103344 | up202103344@fe.up.pt                |
+| Domingos Neto         | 202108728 | up202108728@fe.up.pt                |
 
 ----
 
