@@ -1,12 +1,11 @@
 # CG 2023/2024
 
-## Group T0xG0y
+## Group T03G08
 
 ## TP 1 Notes
 
-(add your main observations/remarks about your experiments here, in a bulleted list, and remove this line. Some examples below)
+- In exercise 1 we observed that to create an object we need to create a class, add the vertices and the indexes following a counter-clock way. Then we initilize the object in MyScene and then display it. We add the checkboxes in MyInterface, and in MyScene we initialize the checkboxes variables and use them to display or not each object.
+  
+- In exercise 2 we applied the same logic as exercise 1.
 
-- In exercise 1 we observed X
-- In exercise 2 we had difficulties in Y
-
-![Screenshot 1](screenshots/cg-t0xgxx-tp1-n.png)
+![Screenshot 1](tp1/screenshots/CG-t03g08-tp1-1.png)
