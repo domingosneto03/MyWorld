@@ -37,11 +37,6 @@ export class MyScene extends CGFscene {
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayDiamond = true;
-    this.displayTriangle = false;
-    this.displayTriangleSmall = false;
-    this.displayTriangleBig = false;
-    this.displayParallelogram = false;
     this.scaleFactor = 1;
   }
   initLights() {
@@ -60,10 +55,18 @@ export class MyScene extends CGFscene {
     );
   }
   setDefaultAppearance() {
-    this.setAmbient(0.2, 0.4, 0.8, 1.0);
+    this.setAmbient(0, 0, 0, 1.0);
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
-    this.setSpecular(0.2, 0.4, 0.8, 1.0);
+    this.setSpecular(0, 0, 0, 1.0);
     this.setShininess(10.0);
+  }
+  get_trans(x,y,z){
+    var trans = [
+      1.0, 0.0, 0.0, 0.0,
+      0.0, 1.0, 0.0, 0.0,
+      0.0, 0.0, 1.0, 0.0,
+      x, y, z, 1.0  
+    ]
   }
   display() {
     // ---- BEGIN Background, camera and axis setup
@@ -76,48 +79,29 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
+    this.pushMatrix();//Identity
+
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
     this.setDefaultAppearance();
 
-    var sca = [
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      this.scaleFactor,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
+    this.scaleFactor = 1;
+    
+    //2.1.1
+    var trans = [// translate (-0.5, 2, 0)
+      1.0, 0.0, 0.0, 0.0,
+      0.0, 1.0, 0.0, 0.0,
+      0.0, 0.0, 1.0, 0.0,
+      -0.5, 2.0, 0.0, 1.0  
     ];
+    this.multMatrix(trans);
+    this.diamond.display();
 
-    this.multMatrix(sca);
+    //2.1.2
+    this.popMatrix();
+    this.rotate(0.5,0.0, 1.0, 0.0); //https://webglfundamentals.org/webgl/lessons/webgl-2d-rotation.html
+    this.triangleSmall.display();
 
-    // ---- BEGIN Primitive drawing section
-    if (this.displayDiamond){
-      this.diamond.display();
-    }
-    if (this.displayTriangle) {
-      this.triangle.display();
-    }
-    if (this.displayParallelogram) {
-      this.parallelogram.display();
-    }
-    if (this.displayTriangleSmall) {
-      this.triangleSmall.display();
-    }
-    if (this.displayTriangleBig) {
-      this.triangleBig.display();
-    }
-    // ---- END Primitive drawing section
   }
 }
