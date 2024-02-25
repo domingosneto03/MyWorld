@@ -4,6 +4,7 @@ import { MyTriangle } from "./MyTriangle.js";
 import { MyTriangleSmall } from "./MyTriangleSmall.js";
 import { MyTriangleBig } from "./MyTriangleBig.js";
 import { MyParallelogram } from "./MyParallelogram.js";
+import { MyUnitCube } from "./MyUnitCube.js";
 
 /**
  * MyScene
@@ -34,6 +35,7 @@ export class MyScene extends CGFscene {
     this.triangleSmall = new MyTriangleSmall(this);
     this.triangleBig = new MyTriangleBig(this);
     this.parallelogram = new MyParallelogram(this);
+    this.unitcube = new MyUnitCube(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -60,6 +62,7 @@ export class MyScene extends CGFscene {
     this.setSpecular(0, 0, 0, 1.0);
     this.setShininess(10.0);
   }
+
   get_trans(x,y,z){
     var trans = [
       1.0, 0.0, 0.0, 0.0,
@@ -68,6 +71,7 @@ export class MyScene extends CGFscene {
       x, y, z, 1.0  
     ]
   }
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -97,11 +101,14 @@ export class MyScene extends CGFscene {
     ];
     this.multMatrix(trans);
     this.diamond.display();
-
     //2.1.2
     this.popMatrix();
     this.rotate(0.5,0.0, 1.0, 0.0); //https://webglfundamentals.org/webgl/lessons/webgl-2d-rotation.html
-    this.triangleSmall.display();
+    this.triangleSmall.display(); 
 
+    this.pushMatrix();
+    this.translate(0, 0, -3);
+    this.unitcube.display();
+    this.popMatrix();
   }
 }
