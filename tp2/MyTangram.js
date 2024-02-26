@@ -43,9 +43,9 @@ export class MyTangram extends CGFobject {
 
         this.scene.popMatrix();
         this.scene.pushMatrix();
-        this.scene.translate(0.5, -2.25, 0.0);
-        this.scene.rotate(0.75 * Math.PI, 0.0, 0.0, 1.0);
-        this.scene.rotate(Math.PI, 0.1, 0.0, 0.0); // TODO Não sei fazer rotate :(
+        this.scene.translate(0.5, -2.22, 0.0);
+        this.scene.scale(-1,1,1);
+        this.scene.rotate(0.25 * Math.PI, 0.0, 0.0, 0.1);
         this.scene.setDiffuse(255 / 256, 195 / 256, 0 / 256);
         this.scene.parallelogram.display();
 
@@ -64,6 +64,7 @@ export class MyTangram extends CGFobject {
         this.scene.triangleBig.display();
 
         this.scene.popMatrix();
+        this.scene.pushMatrix();
         this.scene.translate(2.5, -4.8, 0.0);
         this.scene.rotate(-0.5 * Math.PI, 0.0, 0.0, 1.0);
         this.scene.setDiffuse(0.9, 0.0, 0.0);
