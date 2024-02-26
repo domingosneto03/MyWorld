@@ -4,6 +4,7 @@ import { MyTriangle } from "./MyTriangle.js";
 import { MyTriangleSmall } from "./MyTriangleSmall.js";
 import { MyTriangleBig } from "./MyTriangleBig.js";
 import { MyParallelogram } from "./MyParallelogram.js";
+import { MyTangram } from "./MyTangram.js";
 
 /**
  * MyScene
@@ -34,6 +35,7 @@ export class MyScene extends CGFscene {
     this.triangleSmall = new MyTriangleSmall(this);
     this.triangleBig = new MyTriangleBig(this);
     this.parallelogram = new MyParallelogram(this);
+    this.tangram = new MyTangram(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -87,8 +89,10 @@ export class MyScene extends CGFscene {
     this.setDefaultAppearance();
 
     this.scaleFactor = 1;
+    this.tangram.display();
     
     //2.1.1
+    /*
     var trans = [// translate (-0.5, 2, 0)
       1.0, 0.0, 0.0, 0.0,
       0.0, 1.0, 0.0, 0.0,
@@ -96,12 +100,52 @@ export class MyScene extends CGFscene {
       -0.5, 2.0, 0.0, 1.0  
     ];
     this.multMatrix(trans);
+    this.setDiffuse(0.0, 0.9, 0.0);
     this.diamond.display();
-
+    */
     //2.1.2
+    /*
     this.popMatrix();
-    this.rotate(0.5,0.0, 1.0, 0.0); //https://webglfundamentals.org/webgl/lessons/webgl-2d-rotation.html
+    this.pushMatrix();
+    this.translate(0.5, 3, 0);
+    this.rotate(0.5 * Math.PI,0.0, 0.0, 1.0);
+    this.setDiffuse(0.9, 0.0, 0.9);
     this.triangleSmall.display();
 
+    this.popMatrix();
+    this.pushMatrix();
+    this.translate(0.5, 0.6, 0.0);
+    this.rotate(-0.25 * Math.PI, 0.0 ,0.0, 1.0);
+    this.setDiffuse(255/256, 105/256, 180/256);
+    this.triangle.display();
+
+    this.popMatrix();
+    this.pushMatrix();
+    this.translate(0.5, -2.25 ,0.0);
+    this.rotate(0.75 * Math.PI, 0.0, 0.0, 1.0); // TODO Não sei fazer rotate :(
+    this.rotate( Math.PI, 0.1, 0.0, 0.0);
+    this.setDiffuse(255 / 256, 195 / 256, 0 / 256);
+    this.parallelogram.display();
+
+    this.popMatrix();
+    this.pushMatrix();
+    this.translate(0.5, -2.0, 0.0);
+    this.rotate(-0.5 * Math.PI, 0.0, 0.0, 1.0);
+    this.setDiffuse(255 / 256, 87 / 256, 51 / 256);
+    this.triangleBig.display();
+
+    this.popMatrix();
+    this.pushMatrix();
+    this.translate(1.1, -3.4, 0.0);
+    this.rotate(-0.75 * Math.PI, 0.0, 0.0, 1.0);
+    this.setDiffuse(0.0, 0.0, 0.9);
+    this.triangleBig.display();
+
+    this.popMatrix();
+    this.translate(2.5, -4.8, 0.0);
+    this.rotate(-0.5 * Math.PI, 0.0, 0.0, 1.0);
+    this.setDiffuse(0.9, 0.0, 0.0);
+    this.triangleSmall.display();
+    */
   }
 }
