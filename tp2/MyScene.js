@@ -6,6 +6,8 @@ import { MyTriangleBig } from "./MyTriangleBig.js";
 import { MyParallelogram } from "./MyParallelogram.js";
 import { MyUnitCube } from "./MyUnitCube.js";
 import { MyTangram } from "./MyTangram.js";
+import { MyQuad } from "./MyQuad.js";
+import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 
 /**
  * MyScene
@@ -38,6 +40,8 @@ export class MyScene extends CGFscene {
     this.parallelogram = new MyParallelogram(this);
     this.unitcube = new MyUnitCube(this);
     this.tangram = new MyTangram(this);
+    this.quad = new MyQuad(this);
+    this.cubeQuad = new MyUnitCubeQuad(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -85,7 +89,6 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
-    this.pushMatrix();//Identity
 
     // Draw axis
     if (true) this.axis.display();
@@ -93,7 +96,22 @@ export class MyScene extends CGFscene {
     this.setDefaultAppearance();
 
     this.scaleFactor = 1;
-    
+
+    this.translate(0.5, 0, 0.5);
+    this.rotate(-0.5 * Math.PI, 10, 0, 0);
+    this.pushMatrix();
+
+    this.scale(0.08,0.08,1);
+    this.tangram.display();
+    this.setDefaultAppearance();
+
+    this.popMatrix();
+    this.pushMatrix();
+    this.translate(0,0,-0.1);
+    this.cubeQuad.display();
+
+    /*  TP2-2
+
     this.translate(0.7, 0, 0.7);
     this.rotate(-0.5 * Math.PI, 50, 0, 0);
 
@@ -107,7 +125,7 @@ export class MyScene extends CGFscene {
     this.translate(0,0,-1.1);
     this.scale(10,10,1);
     this.unitcube.display();
-    
+    */
     //2.1.1
     /*
     var trans = [// translate (-0.5, 2, 0)

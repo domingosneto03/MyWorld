@@ -70,6 +70,7 @@ export class MyTangram extends CGFobject {
         this.scene.rotate(-0.5 * Math.PI, 0.0, 0.0, 1.0);
         this.scene.setDiffuse(0.9, 0.0, 0.0);
         this.scene.triangleSmall.display();
+        this.scene.popMatrix();
 
     }
 }
