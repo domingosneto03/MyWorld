@@ -10,7 +10,7 @@ export class MyUnitCube extends CGFobject {
 		this.initBuffers();
 	}
 	
-	initBuffers() {
+	initBuffers() { // Tive que ver bem a ordem que fazia isso daqui
 		this.vertices = [
 			0.5, -0.5, 0.5,		//00 A Right
 			0.5, -0.5, -0.5,	//01 B Right
@@ -36,12 +36,21 @@ export class MyUnitCube extends CGFobject {
 			0.5, 0.5, -0.5,		//21 D Up
 			-0.5, 0.5, 0.5,		//23 H Up
 			-0.5, 0.5, -0.5,	//22 G Up
-			
 		];
 
 		//Counter-clockwise reference of vertices
 		const i = 4;
-		this.indices = [
+		this.indices = [];
+		for(var k = 0; k < 6; k++){
+			this.indices.push(i * k + 0);
+			this.indices.push(i * k + 1);
+			this.indices.push(i * k + 2);
+			this.indices.push(i * k + 1);
+			this.indices.push(i * k + 3);
+			this.indices.push(i * k + 2);
+		}
+		//Versão anterior
+		/*this.indices = [
 			// face 1 Right
 			0 * i + 0, 0 * i + 1, 0 * i + 2,
 			0 * i + 1, 0 * i + 3, 0 * i + 2,
@@ -60,7 +69,7 @@ export class MyUnitCube extends CGFobject {
 			//face 6 up
 			5 * i + 0, 5 * i + 1, 5 * i + 2,
 			5 * i + 1, 5 * i + 3, 5 * i + 2,
-		];
+		];*/
 
 		this.normals = [
 			1, 0, 0,	//A Right
