@@ -28,10 +28,10 @@ export class MyUnitCube extends CGFobject {
 			-0.5, -0.5, -0.5,	//14 E Back
 			0.5, 0.5, -0.5,		//13 D Back
 			-0.5, 0.5, -0.5,	//15 G Back
-			0.5, -0.5, 0.5,		//16 A Down
-			0.5, -0.5, -0.5,	//17 B Down
-			-0.5, -0.5, -0.5,	//18 E Down
+			0.5, -0.5, 0.5,		//18 A Down
 			-0.5, -0.5, 0.5,	//19 F Down
+			0.5, -0.5, -0.5,	//16 B Down
+			-0.5, -0.5, -0.5,	//17 E Down
 			0.5, 0.5, 0.5,		//20 C Up
 			0.5, 0.5, -0.5,		//21 D Up
 			-0.5, 0.5, 0.5,		//23 H Up
@@ -40,25 +40,26 @@ export class MyUnitCube extends CGFobject {
 		];
 
 		//Counter-clockwise reference of vertices
+		const i = 4;
 		this.indices = [
-            // face 1 Right
-			0, 1, 2,
-			1, 3, 2,
+			// face 1 Right
+			0 * i + 0, 0 * i + 1, 0 * i + 2,
+			0 * i + 1, 0 * i + 3, 0 * i + 2,
             // face 2 Front 
-            4, 5, 6,
-            5, 7, 6,
-            // face 3 Left
-            8, 9, 10,
-            9, 11, 10,
+			1 * i + 0, 1 * i + 1, 1 * i + 2,
+			1 * i + 1, 1 * i + 3, 1 * i + 2,
+			// face 3 Left
+			2 * i + 0, 2 * i + 1, 2 * i + 2,
+			2 * i + 1, 2 * i + 3, 2 * i + 2,
 			//face 4 Back
-			12, 13, 14,
-			13, 15, 14,
+			3 * i + 0, 3 * i + 1, 3 * i + 2,
+			3 * i + 1, 3 * i + 3, 3 * i + 2,
 			//face 5 Down
-			16, 19, 17,
-			17, 19, 18,
+			4 * i + 0, 4 * i + 1, 4 * i + 2,
+			4 * i + 1, 4 * i + 3, 4 * i + 2,
 			//face 6 up
-			20, 21, 22,
-			21, 23, 22,
+			5 * i + 0, 5 * i + 1, 5 * i + 2,
+			5 * i + 1, 5 * i + 3, 5 * i + 2,
 		];
 
 		this.normals = [
