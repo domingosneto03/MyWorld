@@ -5,7 +5,7 @@ import { MyPlane } from "./MyPlane.js";
 import { MyUnitCube } from "./MyUnitCube.js";
 import { MyTangram } from "./MyTangram.js";
 import { MyPrism } from "./MyPrism.js";
-import { MyCylinder } from "./MyCylinder.js";
+import { MyCylinder } from "./TestCylinder.js";
 
 /**
 * MyScene

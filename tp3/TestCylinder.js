@@ -17,7 +17,6 @@ export class MyCylinder extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
-
         var ang = 0;
         var alphaAng = 2 * Math.PI / this.slices;
 
@@ -29,22 +28,34 @@ export class MyCylinder extends CGFobject {
                 var sa = Math.sin(ang);
                 var ca = Math.cos(ang);
                 this.vertices.push(ca, height, -sa);
+                if(ca == 0 && height == 0 && -sa == 0){
+                    console.log("WTF?");
+                }
                 this.normals.push(ca, 0, -sa);
                 ang += alphaAng
             }
             height += alphaHeight;
         }
-
+        
         for(var k = 0; k < this.stacks; k++){
-            for(var i = 0; i < this.slices; i++){
+            for(var i = 0; i < this.slices - 1; i++){
                 this.indices.push(
-                    (4 * i) + k * this.slices * 4, 
-                    (4 * i + 1) + k * this.slices * 4, 
-                    (4 * i + 2) + k * this.slices * 4,
-                    (4 * i + 1) + k * this.slices * 4, 
-                    (4 * i + 3) + k * this.slices * 4, 
-                    (4 * i + 2) + k * this.slices * 4);
+                    i + k * this.slices, 
+                    i + 1 + k * this.slices, 
+                    i + (k + 1) * this.slices,
+                    i + 1 + k * this.slices,
+                    i + 1 + (k + 1) * this.slices,
+                    i + (k + 1) * this.slices
+                );
             }
+            this.indices.push(
+                i + k * this.slices,
+                 k * this.slices,
+                i + (k + 1) * this.slices,
+                 k * this.slices,
+                i + 1 + (k + 1) * this.slices,
+                i + (k + 1) * this.slices
+            );
         }
 
         console.log(this.vertices.length);
