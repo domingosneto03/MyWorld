@@ -76,6 +76,7 @@ export class MyPrism extends CGFobject {
             height += alphaHeight;
         }
 
+        console.log(this.vertices.length);
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
