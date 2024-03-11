@@ -50,10 +50,10 @@ export class MyCylinder extends CGFobject {
             }
             this.indices.push(
                 i + k * this.slices,
-                 k * this.slices,
+                k * this.slices,
                 i + (k + 1) * this.slices,
-                 k * this.slices,
-                i + 1 + (k + 1) * this.slices,
+                k * this.slices,
+                (k + 1) * this.slices,
                 i + (k + 1) * this.slices
             );
         }
