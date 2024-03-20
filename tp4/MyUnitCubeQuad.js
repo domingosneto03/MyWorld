@@ -37,12 +37,14 @@ export class MyUnitCubeQuad extends CGFobject {
 
     display() {
         this.front.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.quad.display();
 
         this.scene.pushMatrix();
         this.scene.translate(0, 0, -1);
         this.scene.rotate(Math.PI, 0, 10, 0);
         this.back.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.quad.display();
 
         this.scene.popMatrix();
@@ -50,6 +52,7 @@ export class MyUnitCubeQuad extends CGFobject {
         this.scene.rotate(0.5 * Math.PI, 0, 10, 0);
         this.scene.translate(0.5, 0, 0.5);
         this.right.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.quad.display();
 
         this.scene.popMatrix();
@@ -57,6 +60,7 @@ export class MyUnitCubeQuad extends CGFobject {
         this.scene.translate(-0.5, 0, -0.5);
         this.scene.rotate(-0.5 * Math.PI, 0, 10, 0);
         this.left.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.quad.display();
 
         this.scene.popMatrix();
@@ -64,6 +68,7 @@ export class MyUnitCubeQuad extends CGFobject {
         this.scene.translate(0, 0.5, -0.5);
         this.scene.rotate(-0.5 * Math.PI, 10, 0, 0);
         this.top.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.quad.display();
 
         this.scene.popMatrix();
@@ -71,6 +76,7 @@ export class MyUnitCubeQuad extends CGFobject {
         this.scene.translate(0, -0.5, -0.5);
         this.scene.rotate(0.5 * Math.PI, 10, 0, 0);
         this.bottom.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.quad.display();
         this.scene.popMatrix();
     }
