@@ -17,6 +17,7 @@ export class MySphere extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = [];
         var ang = 0;
         var alphaAng = 2 * Math.PI / this.slices;
 
@@ -32,6 +33,7 @@ export class MySphere extends CGFobject {
 
                 this.vertices.push(ca * sh, sa * sh, -(ch));
                 this.normals.push(ca * sh, sa * sh, -(ch));
+                this.texCoords.push(i / this.slices, k / this.stacks)
                 ang += alphaAng
 
                 var i2 = i % this.slices;

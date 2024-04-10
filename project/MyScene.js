@@ -35,10 +35,20 @@ export class MyScene extends CGFscene {
 
     this.enableTextures(true);
 
-this.texture = new CGFtexture(this, "images/terrain.jpg");
-this.appearance = new CGFappearance(this);
-this.appearance.setTexture(this.texture);
-this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+    //terrain texture
+    this.planeTexture = new CGFtexture(this, "images/terrain.jpg");
+    this.planeAppearance = new CGFappearance(this);
+    this.planeAppearance.setTexture(this.planeTexture);
+    this.planeAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
+    
+    //earth texture
+    this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
+    this.sphereAppearance = new CGFappearance(this);
+    this.sphereAppearance.setTexture(this.sphereTexture);
+    this.sphereAppearance.setTextureWrap('REPEAT', 'REPEAT');
+    
+
 
   }
   initLights() {
@@ -77,12 +87,19 @@ this.appearance.setTextureWrap('REPEAT', 'REPEAT');
     if (this.displayAxis) this.axis.display();
 
     // ---- BEGIN Primitive drawing section
+
+    //sphere
+    this.pushMatrix();
+    this.sphereAppearance.apply();
     //this.scale(3,3,3);
     this.sphere.display();
+    this.popMatrix();
+
+    //plane
     this.pushMatrix();
-    this.appearance.apply();
+    this.planeAppearance.apply()
     this.translate(0,-100,0);
-    this.scale(400,400,400);
+    this.scale(100,100,100);
     this.rotate(-Math.PI/2.0,1,0,0);
     this.plane.display();
     this.popMatrix();
