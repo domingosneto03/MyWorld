@@ -7,10 +7,11 @@ import { CGFobject } from '../lib/CGF.js';
  * @param stacks - number of divisions along the Y axis
 */
 export class MySphere extends CGFobject {
-    constructor(scene, slices, stacks) {
+    constructor(scene, slices, stacks, inverted=false) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
+        this.inverted = inverted;
         this.initBuffers();
     }
     initBuffers() {
@@ -31,20 +32,38 @@ export class MySphere extends CGFobject {
                 var sh = Math.sin(height);
                 var ch = Math.cos(height);
 
-                this.vertices.push(ca * sh, sa * sh, -(ch));
-                this.normals.push(-(ca * sh), -(sa * sh), ch);
-                this.texCoords.push(i / this.slices, k / this.stacks)
-                ang += alphaAng
+                if(!this.inverted) {
+                    this.vertices.push(ca * sh, sa * sh, -(ch));
+                    this.normals.push(ca * sh, sa * sh, -(ch));
+                    this.texCoords.push(i / this.slices, k / this.stacks)
+                    ang += alphaAng
 
-                var i2 = i % this.slices;
-                this.indices.push(
-                    i2 + k * this.slices,
-                    i2 + 1 + k * this.slices,
-                    i2 + (k + 1) * this.slices,
-                    i2 + 1 + k * this.slices,
-                    i2 + 1 + (k + 1) * this.slices,
-                    i2 + (k + 1) * this.slices
-                );
+                    var i2 = i % this.slices;
+                    this.indices.push(
+                        i2 + k * this.slices,
+                        i2 + 1 + k * this.slices,
+                        i2 + (k + 1) * this.slices,
+                        i2 + 1 + k * this.slices,
+                        i2 + 1 + (k + 1) * this.slices,
+                        i2 + (k + 1) * this.slices
+                    );
+                }
+                else {
+                    this.vertices.push(ca * sh, sa * sh, -(ch));
+                    this.normals.push(-(ca * sh), -(sa * sh), ch);
+                    this.texCoords.push(i / this.slices, k / this.stacks)
+                    ang += alphaAng
+
+                    var i2 = i % this.slices;
+                    this.indices.push(
+                        i2 + k * this.slices,
+                        i2 + (k + 1) * this.slices,
+                        i2 + 1 + k * this.slices,
+                        i2 + 1 + k * this.slices,
+                        i2 + (k + 1) * this.slices,
+                        i2 + 1 + (k + 1) * this.slices
+                    );
+                }                
             }
             height += alphaHeight;
         }
@@ -52,6 +71,7 @@ export class MySphere extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+    
     /**
      * Called when user interacts with GUI to change object's complexity.
      * @param {integer} complexity - changes number of slices

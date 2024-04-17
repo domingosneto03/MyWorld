@@ -1,6 +1,7 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
+import { MyPanorama } from "./MyPanorama.js";
 
 /**
  * MyScene
@@ -27,7 +28,7 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 10, 10);
+    this.sphere = new MySphere(this, 10, 10, false);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -48,11 +49,11 @@ export class MyScene extends CGFscene {
     this.sphereAppearance.setTexture(this.sphereTexture);
     this.sphereAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
-    /*
+    
     this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
     this.panorama = new MyPanorama(this, this.panoramaTexture);
     this.panoramaCentered = true;
-    */
+    
 
 
   }
@@ -109,18 +110,9 @@ export class MyScene extends CGFscene {
     this.plane.display();
     this.popMatrix();
 
-    /*
-    // Draw panorama centered on camera position
-    if (this.panoramaCentered) {
-        let cameraPosition = this.camera.position;
-        this.pushMatrix();
-        this.translate(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
-        this.panorama.display();
-        this.popMatrix();
-    } else {
-        this.panorama.display();
-    }
-    */
+    this.panorama.display();
+
+    
 
     // ---- END Primitive drawing section
   }
