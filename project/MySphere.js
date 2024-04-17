@@ -32,7 +32,7 @@ export class MySphere extends CGFobject {
                 var ch = Math.cos(height);
 
                 this.vertices.push(ca * sh, sa * sh, -(ch));
-                this.normals.push(ca * sh, sa * sh, -(ch));
+                this.normals.push(-(ca * sh), -(sa * sh), ch);
                 this.texCoords.push(i / this.slices, k / this.stacks)
                 ang += alphaAng
 

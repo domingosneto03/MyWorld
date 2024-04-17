@@ -47,7 +47,12 @@ export class MyScene extends CGFscene {
     this.sphereAppearance = new CGFappearance(this);
     this.sphereAppearance.setTexture(this.sphereTexture);
     this.sphereAppearance.setTextureWrap('REPEAT', 'REPEAT');
-    
+
+    /*
+    this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
+    this.panorama = new MyPanorama(this, this.panoramaTexture);
+    this.panoramaCentered = true;
+    */
 
 
   }
@@ -99,10 +104,23 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.planeAppearance.apply()
     this.translate(0,-100,0);
-    this.scale(100,100,100);
+    this.scale(400,400,400);
     this.rotate(-Math.PI/2.0,1,0,0);
     this.plane.display();
     this.popMatrix();
+
+    /*
+    // Draw panorama centered on camera position
+    if (this.panoramaCentered) {
+        let cameraPosition = this.camera.position;
+        this.pushMatrix();
+        this.translate(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
+        this.panorama.display();
+        this.popMatrix();
+    } else {
+        this.panorama.display();
+    }
+    */
 
     // ---- END Primitive drawing section
   }
