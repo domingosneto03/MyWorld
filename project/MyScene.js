@@ -28,7 +28,7 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 10, 10, false);
+    this.sphere = new MySphere(this, 1, 10, 10);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -94,12 +94,14 @@ export class MyScene extends CGFscene {
 
     // ---- BEGIN Primitive drawing section
 
+
     //sphere
     this.pushMatrix();
     this.sphereAppearance.apply();
     //this.scale(3,3,3);
     this.sphere.display();
     this.popMatrix();
+
 
     //plane
     this.pushMatrix();
