@@ -7,6 +7,7 @@ export class MyRock extends CGFobject {
         this.slices = slices;
         this.stacks = stacks;
         this.texture = texture;
+        this.scales = [1, 1, 1];
         this.initBuffers();
     }
 
@@ -57,10 +58,17 @@ export class MyRock extends CGFobject {
         this.position = [x, y, z];
     }
 
+    setScales(x, y, z) {
+        this.scales = [x, y, z];
+    }
+
     display() {
+        this.scene.pushMatrix();
         this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        this.scene.scale(this.scales[0], this.scales[1], this.scales[2]);
         this.appearance.apply();
         super.display();
+        this.scene.popMatrix();
     }
 
     /**
