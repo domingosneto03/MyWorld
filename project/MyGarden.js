@@ -40,8 +40,8 @@ export class MyGarden extends CGFobject {
             for(var j = 0; j < this.matrixSize; j++){
                 this.scene.pushMatrix();
                 var x = j * dx + this.flowers[i * this.matrixSize + j].getPosx();
-                var y = i * dy + this.flowers[i * this.matrixSize + j].getPosy();
-                this.scene.translate(x, 0, y);
+                var z = i * dy + this.flowers[i * this.matrixSize + j].getPosz();
+                this.scene.translate(x, 0, z);
                 this.scene.rotate(this.flowers[i * this.matrixSize + j].getYRotation(), 0, 1, 0);
                 this.flowers[i * this.matrixSize + j].display();
                 this.scene.popMatrix();
