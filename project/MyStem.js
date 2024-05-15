@@ -35,6 +35,7 @@ export class MyStem extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = [];
         var ang = 0;
         var alphaAng = 2 * Math.PI / this.slices;
 
@@ -56,6 +57,14 @@ export class MyStem extends CGFobject {
                 i0, i1, i2,
                 i1, i3, i2
             );
+
+            if(i % 2 == 0){
+                this.texCoords.push(0, 0);
+                this.texCoords.push(1, 0);
+            }else{
+                this.texCoords.push(0, 1);
+                this.texCoords.push(1, 1);
+            }
 
             ang += alphaAng;
         }

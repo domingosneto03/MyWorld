@@ -16,13 +16,13 @@ export class MyGarden extends CGFobject {
             for(var j = 0; j < matrixSize; j++){
                 var flowerRadius = Math.random() * 4 + 3;
                 var nPetals = Math.floor(Math.random() * 10) + 6;
-                var petalColor = 0;//TODO
+                var petalColor = Math.ceil(Math.random() * 2);
                 var receptacleRadius = flowerRadius / (Math.random() * 3 + 2);
-                var receptacleColor = 0;//TODO
+                var receptacleColor = Math.floor(Math.random() * 2);    
                 var stemRadius = Math.random() * 0.5 + 0.2;
                 var stemSize = Math.floor(Math.random() * 2) + 3;
-                var stemColor = 0;//TODO
-                var leaveColor = 0;//TODO
+                var stemColor = Math.ceil(Math.random() * 3) % 3;
+                var leaveColor = Math.floor(Math.random() * 3) % 3;
                 var posx = Math.random() * 6 + 2;
                 var posz = Math.random() * 6 + 2;
                 var yRotation = Math.random() * 2 * Math.PI;

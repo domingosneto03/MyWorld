@@ -72,6 +72,19 @@ export class MyPetal extends CGFobject {
             0, -caa, -saa,
         ];
 
+        this.texCoords = [
+            //para cima
+            0,0,
+            0,1,
+            1,0,
+            1,1,
+            //para baixo
+            0, 0,
+            0, 1,
+            1, 0,
+            1, 1,
+        ];
+
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }

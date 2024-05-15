@@ -31,6 +31,7 @@ export class MyReceptacle extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = [];
 
         var ang = 0;
         const alphaAng = 2 * Math.PI / this.slices;
@@ -45,6 +46,8 @@ export class MyReceptacle extends CGFobject {
             var ca = Math.cos(ang);
 
             this.vertices.push(ca * this.radius, 0, -sa * this.radius);
+
+            this.texCoords.push((ca + 1)/2, (-sa + 1)/2);
 
             var normal = [
                 cb * ca,

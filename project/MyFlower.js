@@ -12,10 +12,34 @@ export class MyFlower extends CGFobject {
     constructor(scene, flowerRadius, nPetals, petalColor, receptacleRadius, receptacleColor, stemRadius, stemSize, stemColor, leaveColor, posx = 5, posz = 5, yRotation = 0) {
         super(scene);
         this.scene = scene;
-        this.petalColor = petalColor;           //TODO UTILIZAR
-        this.receptacleColor = receptacleColor; //TODO UTILIZAR
-        this.stemColor = stemColor;             //TODO UTILIZAR
-        this.leaveColor = leaveColor;           //TODO UTILIZAR
+        this.petalTextures = [
+            new CGFtexture(this.scene, 'images/pinkPetal.jpg'),
+            new CGFtexture(this.scene, 'images/yellowPetal.webp'),
+            new CGFtexture(this.scene, 'images/bluePetal.jpg'),
+        ];
+        this.receptacleTextures = [
+            new CGFtexture(this.scene, 'images/receptacle1.jpg'),
+            new CGFtexture(this.scene, 'images/receptacle2.jpg'),
+        ];
+        this.stemTextures = [
+            new CGFtexture(this.scene, 'images/stemTexture1.jpg'),
+            new CGFtexture(this.scene, 'images/stemTexture2.jpg'),
+            new CGFtexture(this.scene, 'images/stemTexture3.jpg'),
+        ];
+        this.leafTextures = [
+            new CGFtexture(this.scene, 'images/leaf1.jpg'),
+            new CGFtexture(this.scene, 'images/leaf2.jpg'),
+            new CGFtexture(this.scene, 'images/leaf3.jpg'),
+        ];
+        this.petalColor = new CGFappearance(scene);
+        this.receptacleColor = new CGFappearance(scene);
+        this.stemColor = new CGFappearance(scene);
+        this.leaveColor = new CGFappearance(scene);
+        this.petalColor.setTexture(this.petalTextures[petalColor]);
+        this.receptacleColor.setTexture(this.receptacleTextures[1]);
+        this.stemColor.setTexture(this.stemTextures[stemColor]);
+        this.leaveColor.setTexture(this.leafTextures[leaveColor]);
+        
         this.posx = posx;
         this.posz = posz;
         this.yRotation = yRotation;
@@ -62,12 +86,16 @@ export class MyFlower extends CGFobject {
         var rotation = 0;
         var dx = 0;
         var dy = 0;
-        
+        this.stemColor.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.stems[0].display();
         dx += Math.sin(rotation) * this.stems[0].getHeight();
         dy += Math.cos(rotation) * this.stems[0].getHeight();
 
         for(var i = 1; i < this.stems.length; i++){
+
+            this.stemColor.apply();
+            this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
             this.scene.pushMatrix();
             rotation += this.stems[i].getCurvature();
             this.scene.translate(dx - this.stems[i - 1].getRadius(), dy, 0);
@@ -85,6 +113,8 @@ export class MyFlower extends CGFobject {
             this.scene.popMatrix();
 
             //Leaf
+            this.leaveColor.apply();
+            this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
             this.scene.pushMatrix();
             this.scene.translate(dx - this.stems[i].getRadius() - (Math.sin(leafAngle) * this.leaveStems[i].getHeight()), dy + (Math.cos(leafAngle) * this.leaveStems[i].getHeight()), 0);
             this.scene.rotate(leafAngle, 0, 0, 1);
@@ -96,12 +126,17 @@ export class MyFlower extends CGFobject {
         }
         
         //Receptacle
+        this.receptacleColor.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.scene.pushMatrix();
         this.scene.translate(dx - Math.sin(rotation) * this.receptacle.getHeight(), dy - Math.cos(rotation) * this.receptacle.getHeight(), 0);
         this.scene.rotate(-rotation, 0, 0, 1);
         this.receptacle.display();
+        //Petals
         var ang = 0;
         var alphaAng = 2 * Math.PI / this.petals.length;
+        this.petalColor.apply();
+        this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         for(var i = 0; i < this.petals.length; i++){
             this.scene.pushMatrix();
             this.scene.translate(Math.cos(ang) * this.receptacle.getRadius() + Math.cos(ang)*this.petals[i].getHeight()/2,0,Math.sin(ang) * this.receptacle.getRadius() + Math.sin(ang)*this.petals[i].getHeight()/2);
