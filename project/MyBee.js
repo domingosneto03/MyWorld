@@ -6,8 +6,12 @@ import { MyTriangle } from './MyTriangle.js';
 export class MyBee extends CGFobject {
     constructor(scene) {
         super(scene);
+        this.elapsedTime = 0; // Initialize elapsed time
+        //this.position = [0, 3, 0]; // Initial position of the bee (above the ground)
+        //this.initialPosition = [...this.position];
         this.initComponents();
         this.initTextures();
+
     }
 
     initComponents() {
@@ -20,6 +24,9 @@ export class MyBee extends CGFobject {
 
         // Abdomen
         this.abdomen = new MySphere(this.scene, 0.5, 10, 10);
+
+        // Sting
+        this.sting = new MySphere(this.scene, 0.3, 10, 10);
 
         
         // Legs
@@ -43,7 +50,7 @@ export class MyBee extends CGFobject {
 
         
         // Eyes texture
-        this.eyesTexture = new CGFtexture(this.scene, "images/beeEyes.jpg");
+        this.eyesTexture = new CGFtexture(this.scene, "images/beeEyes2.jpg");
         this.eyesAppearance = new CGFappearance(this.scene);
         this.eyesAppearance.setTexture(this.eyesTexture);
         this.eyesAppearance.setTextureWrap('REPEAT', 'REPEAT');
@@ -54,7 +61,12 @@ export class MyBee extends CGFobject {
         this.abdomenAppearance.setTexture(this.abdomenTexture);
         this.abdomenAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
-        
+        // Sting Texture
+        this.stingTexture = new CGFtexture(this.scene, "images/beeSting2.jpg");
+        this.stingAppearance = new CGFappearance(this.scene);
+        this.stingAppearance.setTexture(this.stingTexture);
+        this.stingAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
         // Legs texture
         this.legsTexture = new CGFtexture(this.scene, "images/beeLegs.jpg");
         this.legsAppearance = new CGFappearance(this.scene);
@@ -63,16 +75,22 @@ export class MyBee extends CGFobject {
 
         // Wings Texture
         this.wingsAppearance = new CGFappearance(this.scene);
-        this.wingsAppearance.setAmbient(0.8, 0.8, 0.8, 0.3);
-        this.wingsAppearance.setDiffuse(0.8, 0.8, 0.8, 0.3);
-        this.wingsAppearance.setSpecular(0.8, 0.8, 0.8, 0.3);
-        this.scene.gl.blendFunc(this.scene.gl.SRC_ALPHA, this.scene.gl.ONE_MINUS_SRC_ALPHA);
-        this.scene.gl.enable(this.scene.gl.BLEND);
+        this.wingsAppearance.setAmbient(0.3, 0.3, 0.3, 0.2);
+        this.wingsAppearance.setDiffuse(0.4, 0.4, 0.4, 0.4);
+        this.wingsAppearance.setSpecular(0.5, 0.5, 0.5, 0.6);
+        this.wingsAppearance.setShininess(50);
+        this.wingsAppearance.setEmission(0, 0, 0, 0);
         
-    }
+    }    
 
     display() {
         
+        //this.scene.pushMatrix();
+        // Apply translation to position the bee above the ground
+        //this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        
+        // Bee parts
+
         // Draw head
         this.scene.pushMatrix();
         this.scene.translate(0, 0, -0.8);
@@ -98,8 +116,17 @@ export class MyBee extends CGFobject {
         // Draw abdomen
         this.scene.pushMatrix();
         this.scene.scale(1, 0.7, 1.3);
+        this.scene.rotate(Math.PI/3, 1, 0, 0);
         this.abdomenAppearance.apply();
         this.abdomen.display();
+        this.scene.popMatrix();
+
+        // Draw sting
+        this.scene.pushMatrix();
+        this.scene.translate(0, 0, 0.8);
+        this.scene.scale(0.7, 0.5, 1);
+        this.stingAppearance.apply();
+        this.sting.display();
         this.scene.popMatrix();
         
         
@@ -133,13 +160,14 @@ export class MyBee extends CGFobject {
         this.scene.popMatrix();
         
 
-        
         // Draw wings
         this.scene.pushMatrix();
         this.scene.translate(0.5, 0.7, 0);
         this.scene.scale(0.5, 0.5, 0.5);
         this.scene.rotate(3*Math.PI/4, 0, 0, 1);
         this.wingsAppearance.apply();
+        this.scene.gl.enable(this.scene.gl.BLEND);
+        this.scene.gl.blendFunc(this.scene.gl.SRC_ALPHA, this.scene.gl.ONE_MINUS_SRC_ALPHA);
         this.wing1.display();
         this.scene.popMatrix();
         

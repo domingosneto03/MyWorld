@@ -113,7 +113,7 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.planeAppearance.apply()
     this.translate(0,-100,0);
-    this.scale(400,400,400);
+    this.scale(150,150,150);
     this.rotate(-Math.PI/2.0,1,0,0);
     this.plane.display();
     this.popMatrix();
