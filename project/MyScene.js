@@ -4,6 +4,7 @@ import { MyReceptacle } from "./MyReceptacle.js";
 import { MyPetal } from "./MyPetal.js";
 import { MyStem } from "./MyStem.js";
 import { MyFlower } from "./MyFlower.js";
+import { MyGarden } from "./MyGarden.js";
 
 /**
  * MyScene
@@ -32,6 +33,7 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this, 30);
 
     this.flower = new MyFlower(this, 3, 8, "TODO", 2, "TODO", 0.3, 5, "TODO", "TODO");
+    this.garden = new MyGarden(this, 10);
     
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -83,7 +85,7 @@ export class MyScene extends CGFscene {
     this.setDefaultAppearance();
     // ---- BEGIN Primitive drawing section
     this.pushMatrix();
-    this.flower.display();
+    this.garden.display();
     this.popMatrix();
     /*this.pushMatrix();
     this.appearance.apply();

@@ -1,5 +1,5 @@
-import { CGFobject } from "../lib/CGF";
-import { MyFlower } from "./MyFlower";
+import { CGFobject } from "../lib/CGF.js";
+import { MyFlower } from "./MyFlower.js";
 
 /**
  * MyGarden
@@ -20,12 +20,13 @@ export class MyGarden extends CGFobject {
                 var receptacleRadius = flowerRadius / (Math.random() * 3 + 2);
                 var receptacleColor = 0;//TODO
                 var stemRadius = Math.random() * 0.5 + 0.2;
-                var stemSize = Math.floor(Math.random() * 3) + 1;
+                var stemSize = Math.floor(Math.random() * 2) + 3;
                 var stemColor = 0;//TODO
                 var leaveColor = 0;//TODO
                 var posx = Math.random() * 6 + 2;
-                var posy = Math.random() * 6 + 2;
-                this.flowers.push(new MyFlower(scene, flowerRadius, nPetals, petalColor, receptacleRadius, receptacleColor, stemRadius, stemSize, stemColor, leaveColor, posx, posy));
+                var posz = Math.random() * 6 + 2;
+                var yRotation = Math.random() * 2 * Math.PI;
+                this.flowers.push(new MyFlower(scene, flowerRadius, nPetals, petalColor, receptacleRadius, receptacleColor, stemRadius, stemSize, stemColor, leaveColor, posx, posz, yRotation));
             }
         }
 
@@ -41,6 +42,7 @@ export class MyGarden extends CGFobject {
                 var x = j * dx + this.flowers[i * this.matrixSize + j].getPosx();
                 var y = i * dy + this.flowers[i * this.matrixSize + j].getPosy();
                 this.scene.translate(x, 0, y);
+                this.scene.rotate(this.flowers[i * this.matrixSize + j].getYRotation(), 0, 1, 0);
                 this.flowers[i * this.matrixSize + j].display();
                 this.scene.popMatrix();
             }
