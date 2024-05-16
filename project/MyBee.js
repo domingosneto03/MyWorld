@@ -1,19 +1,24 @@
 import { CGFobject, CGFtexture, CGFappearance } from '../lib/CGF.js';
 import { MySphere } from './MySphere.js';
 import { MyCylinder } from './MyCylinder.js';
-import { MyTriangle } from './MyTriangle.js';
+import { MyWings } from './MyWings.js';
 
 export class MyBee extends CGFobject {
     constructor(scene) {
         super(scene);
-        this.elapsedTime = 0;
-        this.position = [0, 0, 0]; // Initial position of the bee (above the ground)
+        this.position = [0, 3, 0]; // Initial position of the bee (above the ground)
         this.orientation = 0; // Initial orientation angle around the Y axis
         this.velocity = [0, 0, 0]; // Initial velocity vector
         this.acceleration = 0.1; // Acceleration factor
         this.maxSpeed = 0.5; // Maximum speed
         this.turnSpeed = Math.PI / 72;
         this.scaleFactor = 1;
+        this.flapAngle = 0; // Initial flap angle
+        this.elapsedTime = 0;
+        this.flapDirection = 1; // Flap direction, 1 for upward and -1 for downward
+        this.flapSpeed = Math.PI / 2; // Flap speed
+        this.flapFrequency = 20; // Flap frequency (Hz)
+        this.lastFlapTime = 0;
         this.initComponents();
         this.initTextures();
 
@@ -41,8 +46,7 @@ export class MyBee extends CGFobject {
         this.leg4 = new MyCylinder(this.scene, 0.04, 0.04, 0.2, 10, 10);
 
         // Wings
-        this.wing1 = new MyTriangle(this.scene);
-        this.wing2 = new MyTriangle(this.scene);
+        this.wings = new MyWings(this.scene);
         
     }
 
@@ -94,6 +98,39 @@ export class MyBee extends CGFobject {
         this.position[1] += this.velocity[1] * delta_t;
         this.position[2] += this.velocity[2] * delta_t;
         this.scaleFactor = beeScaleFactor;
+        this.updateWingFlap(delta_t);
+    }
+
+    updateWingFlap(delta_t) {
+        // Calculate time since the last flap
+        let elapsedTime = (delta_t / 1000); // Convert milliseconds to seconds
+        let timeSinceLastFlap = elapsedTime + this.elapsedTime - this.lastFlapTime;
+        // Calculate flap angle based on frequency
+        let flapPeriod = 1 / this.flapFrequency;
+        let flapTime = timeSinceLastFlap % flapPeriod;
+        let flapPhase = Math.sin((flapTime / flapPeriod) * (2 * Math.PI)); // Sine wave for smooth animation
+        this.flapAngle = flapPhase * Math.PI / 20; // Adjust amplitude of wing flap
+
+        // Update last flap time
+        this.lastFlapTime += elapsedTime;
+    }
+
+    turn(v) {
+        // Update orientation angle
+        this.orientation += v * this.turnSpeed;
+
+        // Update velocity vector direction while maintaining its norm
+        let norm = Math.sqrt(this.velocity[0] ** 2 + this.velocity[2] ** 2);
+        this.velocity[0] = norm * Math.sin(this.orientation);
+        this.velocity[2] = norm * Math.cos(this.orientation);
+    }
+
+    accelerate(v) {
+        // Increase or decrease velocity vector norm
+        let newNorm = this.velocity[1] + v * this.acceleration;
+        if (newNorm > 0 && newNorm < this.maxSpeed) {
+            this.velocity[1] = newNorm;
+        }
     }
 
     display() {
@@ -175,41 +212,11 @@ export class MyBee extends CGFobject {
 
         // Draw wings
         this.scene.pushMatrix();
-        this.scene.translate(0.5, 0.7, 0);
-        this.scene.scale(0.5, 0.5, 0.5);
-        this.scene.rotate(3*Math.PI/4, 0, 0, 1);
+        this.scene.rotate(this.flapAngle * this.flapDirection, 1, 1, 0);
         this.wingsAppearance.apply();
-        this.scene.gl.enable(this.scene.gl.BLEND);
-        this.scene.gl.blendFunc(this.scene.gl.SRC_ALPHA, this.scene.gl.ONE_MINUS_SRC_ALPHA);
-        this.wing1.display();
+        this.wings.display();
         this.scene.popMatrix();
         
-        this.scene.pushMatrix();
-        this.scene.translate(-0.5, 0.7, 0);
-        this.scene.scale(0.5, 0.5, 0.5);
-        this.scene.rotate(-3*Math.PI/4, 0, 0, 1);
-        this.wing2.display();
-        this.wingsAppearance.apply();
-        this.scene.popMatrix();
-        
-    }
-
-    turn(v) {
-        // Update orientation angle
-        this.orientation += v * this.turnSpeed;
-
-        // Update velocity vector direction while maintaining its norm
-        let norm = Math.sqrt(this.velocity[0] ** 2 + this.velocity[2] ** 2);
-        this.velocity[0] = norm * Math.sin(this.orientation);
-        this.velocity[2] = norm * Math.cos(this.orientation);
-    }
-
-    accelerate(v) {
-        // Increase or decrease velocity vector norm
-        let newNorm = this.velocity[1] + v * this.acceleration;
-        if (newNorm > 0 && newNorm < this.maxSpeed) {
-            this.velocity[1] = newNorm;
-        }
     }
 
 }
