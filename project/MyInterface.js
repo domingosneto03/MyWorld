@@ -25,8 +25,38 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayRockPyramid').name('Display Pyramid');
 
         //Slider element in GUI
-        this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
+        this.gui.add(this.scene, 'scaleFactor', 0.5, 3).name('Scale Factor');
+        this.gui.add(this.scene, 'speedFactor', 0.1, 3).name('Speed Factor');
+
+        this.initKeys();
 
         return true;
     }
+
+    initKeys() {
+        this.scene.gui = this;
+
+        // Disable the default processKeyboard function
+        this.processKeyboard = function () {};
+
+        // Create a named array to store which keys are being pressed
+        this.activeKeys = {};
+
+    }
+
+    processKeyDown(event) {
+        // Mark the pressed key as active in the array
+        this.activeKeys[event.code] = true;
+    }
+
+    processKeyUp(event) {
+        // Mark the released key as inactive in the array
+        this.activeKeys[event.code] = false;
+    }
+
+    isKeyPressed(keyCode) {
+        // Returns true if a key is marked as pressed, false otherwise
+        return this.activeKeys[keyCode] || false;
+    }
+
 }

@@ -6,9 +6,14 @@ import { MyTriangle } from './MyTriangle.js';
 export class MyBee extends CGFobject {
     constructor(scene) {
         super(scene);
-        this.elapsedTime = 0; // Initialize elapsed time
-        //this.position = [0, 3, 0]; // Initial position of the bee (above the ground)
-        //this.initialPosition = [...this.position];
+        this.elapsedTime = 0;
+        this.position = [0, 0, 0]; // Initial position of the bee (above the ground)
+        this.orientation = 0; // Initial orientation angle around the Y axis
+        this.velocity = [0, 0, 0]; // Initial velocity vector
+        this.acceleration = 0.1; // Acceleration factor
+        this.maxSpeed = 0.5; // Maximum speed
+        this.turnSpeed = Math.PI / 72;
+        this.scaleFactor = 1;
         this.initComponents();
         this.initTextures();
 
@@ -81,13 +86,21 @@ export class MyBee extends CGFobject {
         this.wingsAppearance.setShininess(50);
         this.wingsAppearance.setEmission(0, 0, 0, 0);
         
-    }    
+    }
+    
+    update(delta_t, beeScaleFactor) {
+        // Update position based on velocity vector
+        this.position[0] += this.velocity[0] * delta_t;
+        this.position[1] += this.velocity[1] * delta_t;
+        this.position[2] += this.velocity[2] * delta_t;
+        this.scaleFactor = beeScaleFactor;
+    }
 
     display() {
         
-        //this.scene.pushMatrix();
-        // Apply translation to position the bee above the ground
-        //this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        this.scene.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
+        this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        this.scene.rotate(this.orientation, 0, 1, 0);
         
         // Bee parts
 
@@ -179,6 +192,24 @@ export class MyBee extends CGFobject {
         this.wingsAppearance.apply();
         this.scene.popMatrix();
         
-  
     }
+
+    turn(v) {
+        // Update orientation angle
+        this.orientation += v * this.turnSpeed;
+
+        // Update velocity vector direction while maintaining its norm
+        let norm = Math.sqrt(this.velocity[0] ** 2 + this.velocity[2] ** 2);
+        this.velocity[0] = norm * Math.sin(this.orientation);
+        this.velocity[2] = norm * Math.cos(this.orientation);
+    }
+
+    accelerate(v) {
+        // Increase or decrease velocity vector norm
+        let newNorm = this.velocity[1] + v * this.acceleration;
+        if (newNorm > 0 && newNorm < this.maxSpeed) {
+            this.velocity[1] = newNorm;
+        }
+    }
+
 }

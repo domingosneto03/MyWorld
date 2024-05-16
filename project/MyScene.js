@@ -17,7 +17,7 @@ export class MyScene extends CGFscene {
   }
   init(application) {
     super.init(application);
-    
+
     this.initCameras();
     this.initLights();
 
@@ -39,7 +39,7 @@ export class MyScene extends CGFscene {
     this.bee = new MyBee(this);
 
 
-    //Objects connected to MyInterface
+    //Objects connected to Mygui
     this.displayAxis = true;
     this.displaySphere = false;
     this.displayRock = false;
@@ -84,30 +84,46 @@ export class MyScene extends CGFscene {
     this.animDurationSecs=1;
     this.length=(this.endVal-this.startVal);
 
-    this.animatedBee = new MyAnimation(this,0,5,1,3);
+    //this.animatedBee = new MyAnimation(this,0,5,1,3);
+    this.speedFactor = 1.0;
+    this.scaleFactor = 1.0;
     
   }
+
+  checkKeys() {
+    
+    // Check for key presses
+    if (this.gui.isKeyPressed("KeyW")) {
+        // Accelerate forward
+        this.bee.accelerate(this.speedFactor * 0.0005);
+    } else if (this.gui.isKeyPressed("KeyS")) {
+        // Decelerate or brake
+        this.bee.accelerate(-this.speedFactor * 0.001);
+    }
+
+    if (this.gui.isKeyPressed("KeyA")) {
+        // Turn left
+        this.bee.turn(this.speedFactor * 0.1);
+    } else if (this.gui.isKeyPressed("KeyD")) {
+        // Turn right
+        this.bee.turn(-this.speedFactor * 0.1);
+    }
+
+    if (this.gui.isKeyPressed("KeyR")) {
+        // Reset bee's position and speed
+        this.bee.position = [0, 3, 0];
+        this.bee.orientation = 0;
+        this.bee.velocity = [0, 0, 0];
+    }
+}
 
   update(t) {
 
       // Continuous animation based on current time and app start time 
       var timeSinceAppStart=(t-this.appStartTime)/1000.0;
-      
-      /*
-      this.animVal1=-2+2*Math.sin(timeSinceAppStart*Math.PI*3);
-
-      // Animation based on elapsed time since animation start
-
-      var elapsedTimeSecs=timeSinceAppStart-this.animStartTimeSecs;
-
-      if (elapsedTimeSecs>=0 && elapsedTimeSecs<=this.animDurationSecs)
-      this.animVal2=this.startVal+elapsedTimeSecs/this.animDurationSecs*this.length;
-
-      // delegate animations to objects
-      this.animatedBee.update(timeSinceAppStart);
-      */
-
       this.animVal2 = Math.sin(timeSinceAppStart * Math.PI * 2 / this.animDurationSecs) * this.length / 2 + (this.startVal + this.endVal) / 2;
+      this.checkKeys();
+      this.bee.update(timeSinceAppStart, this.scaleFactor);
 
   }
 
@@ -195,12 +211,6 @@ export class MyScene extends CGFscene {
     this.translate(0,this.animVal2,0);
     this.bee.display();
     this.popMatrix();
-    
-    
-    
-
-    
-    
 
     // ---- END Primitive drawing section
   }
