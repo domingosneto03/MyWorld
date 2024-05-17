@@ -11,6 +11,7 @@ export class MyBee extends CGFobject {
         this.velocity = [0, 0, 0]; // Initial velocity vector
         this.acceleration = 0.1; // Acceleration factor
         this.maxSpeed = 0.5; // Maximum speed
+        this.minSpeed = 0.00001;
         this.turnSpeed = Math.PI / 72;
         this.scaleFactor = 1;
         this.flapAngle = 0; // Initial flap angle
@@ -130,6 +131,9 @@ export class MyBee extends CGFobject {
         let newNorm = this.velocity[1] + v * this.acceleration;
         if (newNorm > 0 && newNorm < this.maxSpeed) {
             this.velocity[1] = newNorm;
+            if(newNorm < this.minSpeed && this.velocity[1] > 0) {
+                this.velocity[1] = 0;
+            }
         }
     }
 
