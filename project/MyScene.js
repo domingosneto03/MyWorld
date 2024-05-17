@@ -1,5 +1,10 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
+import { MyReceptacle } from "./MyReceptacle.js";
+import { MyPetal } from "./MyPetal.js";
+import { MyStem } from "./MyStem.js";
+import { MyFlower } from "./MyFlower.js";
+import { MyGarden } from "./MyGarden.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyRock } from "./MyRock.js";
@@ -17,7 +22,7 @@ export class MyScene extends CGFscene {
   }
   init(application) {
     super.init(application);
-    
+
     this.initCameras();
     this.initLights();
 
@@ -39,12 +44,15 @@ export class MyScene extends CGFscene {
     this.bee = new MyBee(this);
 
 
+    this.garden = new MyGarden(this, 5);
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displaySphere = false;
+    this.displayGarden = false;
     this.displayRock = false;
     this.displayRockPile = false;
     this.displayRockPyramid = false;
+    
     this.scaleFactor = 1;
 
     this.enableTextures(true);
@@ -149,10 +157,13 @@ export class MyScene extends CGFscene {
     
     //plane
     this.pushMatrix();
-    this.planeAppearance.apply()
-    this.translate(0,-100,0);
-    this.scale(150,150,150);
+    this.translate(0,-10,0);
+    if(this.displayGarden){
+      this.garden.display();
+    }
+    this.scale(400,400,400);
     this.rotate(-Math.PI/2.0,1,0,0);
+    this.planeAppearance.apply();
     this.plane.display();
     this.popMatrix();
 
