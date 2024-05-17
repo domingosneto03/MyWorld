@@ -16,7 +16,7 @@ export class MyGarden extends CGFobject {
             for(var j = 0; j < matrixSize; j++){
                 var flowerRadius = Math.random() * 4 + 3;
                 var nPetals = Math.floor(Math.random() * 10) + 6;
-                var petalColor = Math.ceil(Math.random() * 2);
+                var petalColor = Math.floor(Math.random() * 3) % 3;
                 var receptacleRadius = flowerRadius / (Math.random() * 3 + 2);
                 var receptacleColor = Math.floor(Math.random() * 2);    
                 var stemRadius = Math.random() * 0.5 + 0.2;
@@ -36,6 +36,8 @@ export class MyGarden extends CGFobject {
     display() {
         const dx = 10;
         const dy = 10;
+        this.scene.pushMatrix();
+        this.scene.translate(-dx * this.matrixSize /2, 0 , -dy * this.matrixSize / 2);
         for(var i = 0; i < this.matrixSize; i++){
             for(var j = 0; j < this.matrixSize; j++){
                 this.scene.pushMatrix();
@@ -47,5 +49,6 @@ export class MyGarden extends CGFobject {
                 this.scene.popMatrix();
             }
         }
+        this.scene.popMatrix();
     }
 }
