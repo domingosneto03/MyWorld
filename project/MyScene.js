@@ -9,6 +9,8 @@ import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
+import { MyBee } from "./MyBee.js";
+import { MyAnimation } from "./MyAnimation.js";
 
 /**
  * MyScene
@@ -39,6 +41,7 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 1, 10, 10, "images/rock.jpg")
     this.rockSet = new MyRockSet(this, true);
     this.pyramid = new MyRockSet(this, false);
+    this.bee = new MyBee(this);
 
 
     this.garden = new MyGarden(this, 5);
@@ -74,11 +77,48 @@ export class MyScene extends CGFscene {
 
     //rock
     this.rock.setPosition(0,0,0);
-    
-    
 
+    // animation
+    this.setUpdatePeriod(50); // **at least** 50 ms between animations
+
+    this.appStartTime=Date.now(); // current time in milisecs
+
+    this.animVal1=0;
+    this.animVal2=0;
+
+    this.startVal=0;
+    this.endVal=0.5;
+    this.animStartTimeSecs=2;
+    this.animDurationSecs=1;
+    this.length=(this.endVal-this.startVal);
+
+    this.animatedBee = new MyAnimation(this,0,5,1,3);
+    
+  }
+
+  update(t) {
+
+      // Continuous animation based on current time and app start time 
+      var timeSinceAppStart=(t-this.appStartTime)/1000.0;
+      
+      /*
+      this.animVal1=-2+2*Math.sin(timeSinceAppStart*Math.PI*3);
+
+      // Animation based on elapsed time since animation start
+
+      var elapsedTimeSecs=timeSinceAppStart-this.animStartTimeSecs;
+
+      if (elapsedTimeSecs>=0 && elapsedTimeSecs<=this.animDurationSecs)
+      this.animVal2=this.startVal+elapsedTimeSecs/this.animDurationSecs*this.length;
+
+      // delegate animations to objects
+      this.animatedBee.update(timeSinceAppStart);
+      */
+
+      this.animVal2 = Math.sin(timeSinceAppStart * Math.PI * 2 / this.animDurationSecs) * this.length / 2 + (this.startVal + this.endVal) / 2;
 
   }
+
   initLights() {
     this.lights[0].setPosition(15, 0, 5, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -161,6 +201,11 @@ export class MyScene extends CGFscene {
       this.pyramid.display();
       this.popMatrix();
     }
+
+    this.pushMatrix();
+    this.translate(0,this.animVal2,0);
+    this.bee.display();
+    this.popMatrix();
     
     
     
