@@ -7,6 +7,8 @@ import { MyFlower } from "./MyFlower.js";
 import { MyGarden } from "./MyGarden.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
+import { MyRock } from "./MyRock.js";
+import { MyRockSet } from "./MyRockSet.js";
 
 /**
  * MyScene
@@ -34,9 +36,20 @@ export class MyScene extends CGFscene {
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this, 1, 10, 10);
+    this.rock = new MyRock(this, 1, 10, 10, "images/rock.jpg")
+    this.rockSet = new MyRockSet(this, true);
+    this.pyramid = new MyRockSet(this, false);
+
+
     this.garden = new MyGarden(this, 5);
     //Objects connected to MyInterface
     this.displayAxis = true;
+    this.displaySphere = false;
+    this.displayGarden = false;
+    this.displayRock = false;
+    this.displayRockPile = false;
+    this.displayRockPyramid = false;
+    
     this.scaleFactor = 1;
 
     this.enableTextures(true);
@@ -54,10 +67,14 @@ export class MyScene extends CGFscene {
     this.sphereAppearance.setTexture(this.sphereTexture);
     this.sphereAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
-    
+    //panorama
     this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
     this.panorama = new MyPanorama(this, this.panoramaTexture);
     this.panoramaCentered = true;
+
+    //rock
+    this.rock.setPosition(0,0,0);
+    
     
 
 
@@ -97,30 +114,58 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
-    this.setDefaultAppearance();
-    // ---- BEGIN Primitive drawing section
-
-
-    //sphere
-    this.pushMatrix();
-    this.sphereAppearance.apply();
-    //this.scale(3,3,3);
-    this.sphere.display();
-    this.popMatrix();
-
-
+    
     //plane
     this.pushMatrix();
     this.translate(0,-100,0);
-    this.garden.display();
+    if(this.displayGarden){
+      this.garden.display();
+    }
     this.scale(400,400,400);
     this.rotate(-Math.PI/2.0,1,0,0);
     this.planeAppearance.apply();
     this.plane.display();
     this.popMatrix();
 
+    //panorama
     this.panorama.display();
 
+    //sphere
+    if(this.displaySphere) {
+      this.pushMatrix();
+      this.sphereAppearance.apply();
+      this.sphere.display();
+      this.popMatrix();
+    }
+
+    
+    //single rock
+    if(this.displayRock) {
+      this.pushMatrix();
+      this.scale(1.5, 0.8, 2);
+      this.rock.display();
+      this.popMatrix();
+    }
+    
+    //rock pile set
+    if(this.displayRockPile) {
+      this.pushMatrix();
+      this.rockSet.display();
+      this.popMatrix();
+    }
+
+
+    // rock pyramid set
+    if(this.displayRockPyramid) {
+      this.pushMatrix();
+      this.pyramid.display();
+      this.popMatrix();
+    }
+    
+    
+    
+
+    
     
 
     // ---- END Primitive drawing section
