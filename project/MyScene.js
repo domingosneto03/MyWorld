@@ -124,7 +124,25 @@ export class MyScene extends CGFscene {
         this.bee.position = [0, 3, 0];
         this.bee.orientation = 0;
         this.bee.velocity = [0, 0, 0];
+        this.bee.targetPosition = null;
+        this.bee.carryingPollen = null;
     }
+
+    if (this.gui.isKeyPressed("KeyF")) {
+      console.log("F pressed");
+      // Pick pollen
+      this.bee.pickPollen(this.garden);
+    }
+
+  if (this.gui.isKeyPressed("KeyP")) {
+      // Carry pollen
+      this.bee.carryPollen();
+  }
+
+  if (this.gui.isKeyPressed("KeyO")) {
+      // Drop pollen at hive
+      this.bee.dropPollen(this.hive);
+  }
 }
 
   update(t) {

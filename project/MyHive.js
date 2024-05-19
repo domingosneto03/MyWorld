@@ -30,6 +30,16 @@ export class MyHive extends CGFobject {
         this.roof = new MyUnitCube(scene);
     }
 
+    getEntrancePosition() {
+        // Return the position of the hive entrance
+        return [6, -1, -30];
+    }
+
+    receivePollen(pollen) {
+        // Logic to handle received pollen
+        console.log("Pollen received!");
+    }
+
     display() {
         // Draw base
         this.scene.pushMatrix();

@@ -33,6 +33,10 @@ export class MyGarden extends CGFobject {
         this.initBuffers();
     }
 
+    getFlowers() {
+        return this.flowers;
+    }
+
     display() {
         const dx = 10;
         const dy = 10;

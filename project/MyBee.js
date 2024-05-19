@@ -20,6 +20,8 @@ export class MyBee extends CGFobject {
         this.flapSpeed = Math.PI / 2; // Flap speed
         this.flapFrequency = 20; // Flap frequency (Hz)
         this.lastFlapTime = 0;
+        this.carryingPollen = null;
+        this.targetPosition = null;
         this.initComponents();
         this.initTextures();
 
@@ -92,6 +94,10 @@ export class MyBee extends CGFobject {
         this.wingsAppearance.setEmission(0, 0, 0, 0);
         
     }
+
+    getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     
     update(delta_t, beeScaleFactor) {
         // Update position based on velocity vector
@@ -100,6 +106,7 @@ export class MyBee extends CGFobject {
         this.position[2] += this.velocity[2] * delta_t;
         this.scaleFactor = beeScaleFactor;
         this.updateWingFlap(delta_t);
+
     }
 
     updateWingFlap(delta_t) {
@@ -136,6 +143,35 @@ export class MyBee extends CGFobject {
             }
         }
     }
+
+    pickPollen(garden) {
+        if (!this.carryingPollen) {
+            // Logic to find the nearest flower with pollen
+            var randomFlower = garden.getFlowers()[this.getRandom(0,24)];
+            var flowerPosition = randomFlower.getPosition();
+            if (randomFlower) {
+                this.targetPosition = flowerPosition;
+                this.carryingPollen = randomFlower.givePollen();
+            }
+        }
+    }
+
+    /*
+    carryPollen() {
+        if (this.carryingPollen) {
+            this.position[1] += 1; // Ascend to original height
+        }
+    }
+
+    dropPollen(hive) {
+        if (this.carryingPollen) {
+            // Logic to move to hive and drop pollen
+            this.position = hive.getEntrancePosition();
+            hive.receivePollen(this.carryingPollen);
+            this.carryingPollen = null;
+        }
+    }
+    */
 
     display() {
         

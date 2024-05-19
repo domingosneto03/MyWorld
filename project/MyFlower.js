@@ -69,6 +69,7 @@ export class MyFlower extends CGFobject {
 
         this.pollen = new MyPollen(scene, 0.5, 10, 10);
         this.pollenRotation = Math.random() * 2 * Math.PI;
+        this.hasPollen = true;
 
         this.initBuffers();
     }
@@ -83,6 +84,19 @@ export class MyFlower extends CGFobject {
 
     getYRotation(){ 
         return this.yRotation;
+    }
+
+    getPosition() {
+        return [this.posx, 0, this.posz];
+    }
+
+    givePollen() {
+        if (this.hasPollen) {
+            this.hasPollen = false;
+            console.log("a flor deixa de ter polen");
+            return this.pollen; // Give pollen to the bee
+        }
+        return null;
     }
 
     display() {
@@ -154,12 +168,15 @@ export class MyFlower extends CGFobject {
         this.scene.popMatrix();
 
         // Display pollen
-        this.scene.pushMatrix();
-        this.scene.translate(dx - Math.sin(rotation) * this.receptacle.getHeight(), dy - Math.cos(rotation) * this.receptacle.getHeight(), 0);
-        this.scene.rotate(-rotation, 0, 0, 1);
-        this.scene.rotate(this.pollenRotation, 0, 1, 0); // Apply random rotation
-        this.pollen.display();
-        this.scene.popMatrix();
+        if(this.hasPollen) {
+            this.scene.pushMatrix();
+            this.scene.translate(dx - Math.sin(rotation) * this.receptacle.getHeight(), dy - Math.cos(rotation) * this.receptacle.getHeight(), 0);
+            this.scene.rotate(-rotation, 0, 0, 1);
+            this.scene.rotate(this.pollenRotation, 0, 1, 0); // Apply random rotation
+            this.pollen.display();
+            this.scene.popMatrix();
+        }
+        
 
     }
 }
