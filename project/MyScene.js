@@ -10,7 +10,7 @@ import { MyPanorama } from "./MyPanorama.js";
 import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MyBee } from "./MyBee.js";
-import { MyAnimation } from "./MyAnimation.js";
+import { MyHive } from "./MyHive.js";
 
 /**
  * MyScene
@@ -37,21 +37,23 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 1, 10, 10);
+    this.sphere = new MySphere(this, 1, 20, 20);
     this.rock = new MyRock(this, 1, 10, 10, "images/rock.jpg")
     this.rockSet = new MyRockSet(this, true);
     this.pyramid = new MyRockSet(this, false);
     this.bee = new MyBee(this);
+    this.hive = new MyHive(this);
 
 
     this.garden = new MyGarden(this, 5);
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displaySphere = false;
-    this.displayGarden = false;
+    this.displayGarden = true;
     this.displayRock = false;
-    this.displayRockPile = false;
-    this.displayRockPyramid = false;
+    this.displayRockPile = true;
+    this.displayRockPyramid = true;
+    this.displayBee = true;
     
     this.scaleFactor = 1;
 
@@ -206,6 +208,7 @@ export class MyScene extends CGFscene {
     //rock pile set
     if(this.displayRockPile) {
       this.pushMatrix();
+      this.translate(6, -8, -30);
       this.rockSet.display();
       this.popMatrix();
     }
@@ -214,14 +217,22 @@ export class MyScene extends CGFscene {
     // rock pyramid set
     if(this.displayRockPyramid) {
       this.pushMatrix();
+      this.translate(-35, -8, 12);
       this.pyramid.display();
       this.popMatrix();
     }
 
+    if(this.displayBee) {
+      this.pushMatrix();
+      this.translate(0,this.animVal2,0);
+      this.bee.display();
+      this.popMatrix();
+    }
+
     this.pushMatrix();
-    this.translate(0,this.animVal2,0);
-    this.bee.display();
-    this.popMatrix();
+    this.translate(6, -1, -30)
+    this.hive.display();
+    this.popMatrix()
 
     // ---- END Primitive drawing section
   }
