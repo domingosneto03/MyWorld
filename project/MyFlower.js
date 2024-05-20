@@ -67,7 +67,7 @@ export class MyFlower extends CGFobject {
             }
         }
 
-        this.pollen = new MyPollen(scene, 0.5, 10, 10);
+        this.pollen = new MyPollen(scene, 0.3, 10, 10);
         this.pollenRotation = Math.random() * 2 * Math.PI;
         this.hasPollen = true;
 
@@ -86,14 +86,14 @@ export class MyFlower extends CGFobject {
         return this.yRotation;
     }
 
+
     getPosition() {
-        return [this.posx, 0, this.posz];
+        return [this.posx, 4, this.posz];
     }
 
     givePollen() {
         if (this.hasPollen) {
             this.hasPollen = false;
-            console.log("a flor deixa de ter polen");
             return this.pollen; // Give pollen to the bee
         }
         return null;

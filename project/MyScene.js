@@ -106,44 +106,57 @@ export class MyScene extends CGFscene {
     if (this.gui.isKeyPressed("KeyW")) {
         // Accelerate forward
         this.bee.accelerate(this.speedFactor * 0.0005);
+        this.gui.lastKeyPressed = "W";
     } else if (this.gui.isKeyPressed("KeyS")) {
         // Decelerate or brake
         this.bee.accelerate(-this.speedFactor * 0.001);
+        this.gui.lastKeyPressed = "S";
     }
 
     if (this.gui.isKeyPressed("KeyA")) {
         // Turn left
         this.bee.turn(this.speedFactor * 0.1);
+        this.gui.lastKeyPressed = "A";
     } else if (this.gui.isKeyPressed("KeyD")) {
         // Turn right
         this.bee.turn(-this.speedFactor * 0.1);
+        this.gui.lastKeyPressed = "D";
     }
 
     if (this.gui.isKeyPressed("KeyR")) {
         // Reset bee's position and speed
-        this.bee.position = [0, 3, 0];
+        this.bee.position = [0, 10, 0];
         this.bee.orientation = 0;
         this.bee.velocity = [0, 0, 0];
         this.bee.targetPosition = null;
         this.bee.carryingPollen = null;
+        this.bee.reachedFlower = false;
+        this.bee.hasPollen = false;
+        this.gui.lastKeyPressed = "R";
     }
 
     if (this.gui.isKeyPressed("KeyF")) {
-      console.log("F pressed");
       // Pick pollen
-      this.bee.pickPollen(this.garden);
+      if(this.lastKeyPressed != "F") {
+        console.log("checkpoint 1: F pressed");
+        this.bee.pickPollen(this.garden);
+        this.gui.lastKeyPressed = "F";
+      }  
     }
 
-  if (this.gui.isKeyPressed("KeyP")) {
-      // Carry pollen
-      this.bee.carryPollen();
-  }
+    if (this.gui.isKeyPressed("KeyP")) {
+        // Carry pollen
+        console.log("checkpoint 1: P pressed");
+        this.bee.ascendInitialHeight();
+        this.gui.lastKeyPressed = "P";
+    }
 
-  if (this.gui.isKeyPressed("KeyO")) {
-      // Drop pollen at hive
-      this.bee.dropPollen(this.hive);
+    if (this.gui.isKeyPressed("KeyO")) {
+        // Drop pollen at hive
+        this.bee.flyToHive(this.hive);
+        this.gui.lastKeyPressed = "O";
+    }
   }
-}
 
   update(t) {
 
@@ -166,7 +179,7 @@ export class MyScene extends CGFscene {
       1.0,
       0.1,
       1000,
-      vec3.fromValues(50, 10, 15),
+      vec3.fromValues(30, 50, 5),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -193,11 +206,11 @@ export class MyScene extends CGFscene {
     
     //plane
     this.pushMatrix();
-    this.translate(0,-10,0);
+    //this.translate(0,-10,0);
     if(this.displayGarden){
       this.garden.display();
     }
-    this.scale(400,400,400);
+    this.scale(350,350,350);
     this.rotate(-Math.PI/2.0,1,0,0);
     this.planeAppearance.apply();
     this.plane.display();
@@ -226,7 +239,7 @@ export class MyScene extends CGFscene {
     //rock pile set
     if(this.displayRockPile) {
       this.pushMatrix();
-      this.translate(6, -8, -30);
+      this.translate(6, 0.5, -30);
       this.rockSet.display();
       this.popMatrix();
     }
@@ -235,7 +248,7 @@ export class MyScene extends CGFscene {
     // rock pyramid set
     if(this.displayRockPyramid) {
       this.pushMatrix();
-      this.translate(-35, -8, 12);
+      this.translate(-35, 0.5, 12);
       this.pyramid.display();
       this.popMatrix();
     }
@@ -248,7 +261,7 @@ export class MyScene extends CGFscene {
     }
 
     this.pushMatrix();
-    this.translate(6, -1, -30)
+    this.translate(6, 7.5, -30)
     this.hive.display();
     this.popMatrix()
 

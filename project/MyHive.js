@@ -28,15 +28,18 @@ export class MyHive extends CGFobject {
         this.base = new MyUnitCube(scene);
         this.body = new MyUnitCube(scene);
         this.roof = new MyUnitCube(scene);
+
+        this.pollenStock = [];
     }
 
-    getEntrancePosition() {
+    getHivePosition() {
         // Return the position of the hive entrance
-        return [6, -1, -30];
+        return [6, 10, -30];
     }
 
     receivePollen(pollen) {
         // Logic to handle received pollen
+        this.pollenStock.push(pollen);
         console.log("Pollen received!");
     }
 
@@ -54,6 +57,18 @@ export class MyHive extends CGFobject {
         this.scene.translate(0, 0.6, 0);
         this.scene.scale(1.4, 1.2, 1.4);
         this.body.display();
+        // Display pollen on the body of the hive
+        this.scene.pushMatrix();
+        for (let i = 0; i < this.pollenStock.length; i++) {
+            // Place each pollen object at a specific position on the body of the hive
+            const x = Math.random() * 1.2 - 0.6; // Randomize x-coordinate within the range of the hive body
+            const y = Math.random() * 0.9; // Randomize y-coordinate within the height of the hive body
+            const z = Math.random() * 1.2 - 0.6; // Randomize z-coordinate within the range of the hive body
+            this.scene.translate(x, y, z);
+            this.pollenStock[i].display();
+            //this.scene.translate(-x, -y, -z);
+        }
+        this.scene.popMatrix();
         this.scene.popMatrix();
 
         // Draw roof

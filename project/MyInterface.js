@@ -43,6 +43,7 @@ export class MyInterface extends CGFinterface {
 
         // Create a named array to store which keys are being pressed
         this.activeKeys = {};
+        this.lastKeyPressed = null;
 
     }
 
