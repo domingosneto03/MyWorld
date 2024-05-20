@@ -9,7 +9,7 @@ import { MyStem } from './MyStem.js';
  * @param scene - Reference to MyScene object
  */
 export class MyFlower extends CGFobject {
-    constructor(scene, flowerRadius, nPetals, petalColor, receptacleRadius, receptacleColor, stemRadius, stemSize, stemColor, leaveColor, posx = 5, posz = 5, yRotation = 0) {
+    constructor(scene, flowerRadius, nPetals, petalColor, receptacleRadius, receptacleColor, stemRadius, stemSize, stemColor, leaveColor, posx = 5, posz = 5, yRotation = 0, gridPosX = 0, gridPosZ = 0) {
         super(scene);
         this.scene = scene;
         this.petalTextures = [
@@ -42,6 +42,8 @@ export class MyFlower extends CGFobject {
         
         this.posx = posx;
         this.posz = posz;
+        this.gridPosX = gridPosX;
+        this.gridPosZ = gridPosZ;
         this.yRotation = yRotation;
 
         this.petals = [];
@@ -74,6 +76,10 @@ export class MyFlower extends CGFobject {
 
     getPosz(){
         return this.posz;
+    }
+
+    getGardenPos(){
+        return [10 * this.gridPosX + this.posx, 10 * this.gridPosY + this.posz];
     }
 
     getYRotation(){ 

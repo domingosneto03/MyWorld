@@ -26,7 +26,7 @@ export class MyGarden extends CGFobject {
                 var posx = Math.random() * 6 + 2;
                 var posz = Math.random() * 6 + 2;
                 var yRotation = Math.random() * 2 * Math.PI;
-                this.flowers.push(new MyFlower(scene, flowerRadius, nPetals, petalColor, receptacleRadius, receptacleColor, stemRadius, stemSize, stemColor, leaveColor, posx, posz, yRotation));
+                this.flowers.push(new MyFlower(scene, flowerRadius, nPetals, petalColor, receptacleRadius, receptacleColor, stemRadius, stemSize, stemColor, leaveColor, posx, posz, yRotation, j, i));
             }
         }
 
