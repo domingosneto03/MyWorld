@@ -71,7 +71,8 @@ export class MyScene extends CGFscene {
 
     //panorama
     this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
-    this.panorama = new MyPanorama(this, this.panoramaTexture);
+    this.cloudTexture = new CGFtexture(this, "images/clouds.jpg");
+    this.panorama = new MyPanorama(this, this.panoramaTexture, this.cloudTexture);
     this.panoramaCentered = true;
 
     //rock
