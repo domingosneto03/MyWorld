@@ -55,8 +55,8 @@ export class MyCylinder extends CGFobject {
         
         // Create vertices and normals for top circle
         const topCenterIndex = this.vertices.length / 3;
-        this.vertices.push(0, 0, this.height); // Center point of the top circle
-        this.normals.push(0, 0, 1); // Normal for the top circle
+        this.vertices.push(0, 0, this.height);
+        this.normals.push(0, 0, 1);
     
         for (let i = 0; i <= this.slices; i++) {
             const theta = (i * 2 * Math.PI) / this.slices;
@@ -67,7 +67,7 @@ export class MyCylinder extends CGFobject {
             const y = this.topRadius * sinTheta;
     
             this.vertices.push(x, y, this.height);
-            this.normals.push(0, 0, 1); // Normal for the top circle
+            this.normals.push(0, 0, 1);
             this.texCoords.push(0.5 + 0.5 * cosTheta, 0.5 + 0.5 * sinTheta);
         }
     

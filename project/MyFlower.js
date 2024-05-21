@@ -50,7 +50,7 @@ export class MyFlower extends CGFobject {
             }
         }
 
-        this.pollen = new MyPollen(scene, 0.3, 10, 10);
+        this.pollen = new MyPollen(scene, 0.2, 10, 10);
         this.pollenRotation = Math.random() * 2 * Math.PI;
         this.hasPollen = true;
 
@@ -82,15 +82,11 @@ export class MyFlower extends CGFobject {
         return this.yRotation;
     }
 
-
-    getPosition() {
-        return [this.posx, 4, this.posz];
-    }
-
+    // Give pollen to the bee
     givePollen() {
         if (this.hasPollen) {
             this.hasPollen = false;
-            return this.pollen; // Give pollen to the bee
+            return this.pollen;
         }
         return null;
     }
@@ -165,7 +161,7 @@ export class MyFlower extends CGFobject {
             this.scene.pushMatrix();
             this.scene.translate(dx - Math.sin(rotation) * this.receptacle.getHeight(), dy - Math.cos(rotation) * this.receptacle.getHeight(), 0);
             this.scene.rotate(-rotation, 0, 0, 1);
-            this.scene.rotate(this.pollenRotation, 0, 1, 0); // Apply random rotation
+            this.scene.rotate(this.pollenRotation, 0, 1, 0);
             this.pollen.display();
             this.scene.popMatrix();
         }

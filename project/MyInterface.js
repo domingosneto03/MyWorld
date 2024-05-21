@@ -43,22 +43,24 @@ export class MyInterface extends CGFinterface {
 
         // Create a named array to store which keys are being pressed
         this.activeKeys = {};
+
+        // Register the last key pressed
         this.lastKeyPressed = null;
 
     }
 
+    // Mark the pressed key as active in the array
     processKeyDown(event) {
-        // Mark the pressed key as active in the array
         this.activeKeys[event.code] = true;
     }
 
+    // Mark the released key as inactive in the array
     processKeyUp(event) {
-        // Mark the released key as inactive in the array
         this.activeKeys[event.code] = false;
     }
 
+    // Returns true if a key is marked as pressed, false otherwise
     isKeyPressed(keyCode) {
-        // Returns true if a key is marked as pressed, false otherwise
         return this.activeKeys[keyCode] || false;
     }
 
