@@ -6,7 +6,7 @@ import { MyWings } from './MyWings.js';
 export class MyBee extends CGFobject {
     constructor(scene) {
         super(scene);
-        this.position = [0, 3, 0]; // Initial position of the bee (above the ground)
+        this.position = [0, 10, 0]; // Initial position of the bee (above the ground)
         this.orientation = 0; // Initial orientation angle around the Y axis
         this.velocity = [0, 0, 0]; // Initial velocity vector
         this.acceleration = 0.1; // Acceleration factor
@@ -20,6 +20,11 @@ export class MyBee extends CGFobject {
         this.flapSpeed = Math.PI / 2; // Flap speed
         this.flapFrequency = 20; // Flap frequency (Hz)
         this.lastFlapTime = 0;
+        this.reachedFlower = false;
+        this.reachedHive = false;
+        this.hasPollen = false;
+        this.carryingPollen = null;
+        this.targetPosition = null;
         this.initComponents();
         this.initTextures();
 
@@ -92,14 +97,17 @@ export class MyBee extends CGFobject {
         this.wingsAppearance.setEmission(0, 0, 0, 0);
         
     }
+
+    getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     
     update(delta_t, beeScaleFactor) {
         // Update position based on velocity vector
-        this.position[0] += this.velocity[0] * delta_t;
-        this.position[1] += this.velocity[1] * delta_t;
-        this.position[2] += this.velocity[2] * delta_t;
         this.scaleFactor = beeScaleFactor;
         this.updateWingFlap(delta_t);
+        this.position[1] += this.velocity[1] * delta_t;
+
     }
 
     updateWingFlap(delta_t) {
@@ -127,12 +135,111 @@ export class MyBee extends CGFobject {
     }
 
     accelerate(v) {
-        // Increase or decrease velocity vector norm
-        let newNorm = this.velocity[1] + v * this.acceleration;
-        if (newNorm > 0 && newNorm < this.maxSpeed) {
-            this.velocity[1] = newNorm;
-            if(newNorm < this.minSpeed && this.velocity[1] > 0) {
-                this.velocity[1] = 0;
+        for(var i=0; i<this.velocity.length; i++) {
+            this.velocity[i] = Math.max(0, this.velocity[i] + v)
+        }
+    }
+
+    pickPollen(garden) {
+        if (!this.carryingPollen) {
+            // Logic to find the nearest flower with pollen
+            //var idx = this.getRandom(0, 24);
+            var randomFlower = garden.getFlowers()[5];
+            //console.log("idx: " + idx);
+            var flowerPosition = randomFlower.getPosition();
+            if (randomFlower) {
+                this.targetPosition = flowerPosition;
+                this.descendToFlower(this.targetPosition);
+                if(this.reachedFlower) {
+                    this.carryingPollen = randomFlower.givePollen();
+                    this.hasPollen = true;
+                }
+            }
+        }
+    }
+
+    
+    descendToFlower(target) {
+        console.log("checkpoint 4: bee will descend");
+        console.log("target pos: " + target);
+        if(!this.hasPollen) {
+
+            var direction = [
+                target[0] - this.position[0],
+                target[1] - this.position[1],
+                target[2] - this.position[2]
+            ]
+            console.log("direction: " + direction);
+
+            this.orientation = Math.atan2(direction[0], direction[2]) + Math.PI / 2;
+            var distance = Math.sqrt(direction[0] ** 2 + direction[1] ** 2 + direction[2] ** 2);
+            const descendSpeed = 0.05;
+
+            if (distance > 0.1) {
+                this.position[0] += direction[0] * descendSpeed;
+                this.position[1] += direction[1] * descendSpeed;
+                this.position[2] += direction[2] * descendSpeed;
+            } else {
+                this.position[0] = target[0];
+                this.position[0] = target[1];
+                this.position[0] = target[2];
+                this.velocity = [0, 0, 0];
+                this.reachedFlower = true;
+            }
+        }
+    }
+    
+
+    ascendInitialHeight() {
+        var distance = 10 - this.position[1];
+        const ascendSpeed = 0.05;
+        if(distance > 0.1) {
+            this.position[1] += distance * ascendSpeed;
+        } else {
+            this.position[1] = 10;
+            this.velocity = [0, 0, 0];
+            console.log("reached initial height");
+        }
+    }
+
+    flyToHive(hive) {
+        const hivePosition = hive.getHivePosition();
+        if (this.carryingPollen) {
+            var direction = [
+                hivePosition[0] - this.position[0],
+                hivePosition[1] - this.position[1],
+                hivePosition[2] - this.position[2]
+            ]
+
+            this.orientation = Math.atan2(direction[0], direction[2]) + Math.PI / 2;
+            var distance = Math.sqrt(direction[0] ** 2 + direction[1] ** 2 + direction[2] ** 2);
+            const flySpeed = 0.1;
+
+            if (distance > 0.1) {
+                this.position[0] += direction[0] * flySpeed;
+                this.position[1] += direction[1] * flySpeed;
+                this.position[2] += direction[2] * flySpeed;
+            } else {
+                this.position[0] = hivePosition[0];
+                this.position[0] = hivePosition[1];
+                this.position[0] = hivePosition[2];
+                this.velocity = [0, 0, 0];
+                this.reachedHive = true;
+                console.log("Reached Hive");
+                this.dropPollen(hive);
+            }
+        }
+    }
+
+    dropPollen(hive) {
+        if(this.hasPollen && this.carryingPollen) {
+            if(this.reachedHive) {
+                hive.receivePollen(this.carryingPollen);
+                this.carryingPollen = null;
+                this.hasPollen = false;
+                this.position[0] = hive.getHivePosition()[0];
+                this.position[1] += 2;
+                this.position[2] = hive.getHivePosition()[2];
             }
         }
     }
@@ -221,6 +328,14 @@ export class MyBee extends CGFobject {
         this.wings.display();
         this.scene.popMatrix();
         
+        // Draw pollen below bee if hasPollen is true
+        if (this.hasPollen && this.carryingPollen) {
+            this.scene.pushMatrix();
+            this.scene.translate(0, -1, 0); // Adjust the position as needed
+            // Display the pollen object
+            this.carryingPollen.display();
+            this.scene.popMatrix();
+        }
     }
 
 }

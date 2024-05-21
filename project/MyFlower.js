@@ -2,6 +2,7 @@ import { CGFappearance, CGFobject, CGFtexture } from '../lib/CGF.js';
 import { MyPetal } from './MyPetal.js';
 import { MyReceptacle } from './MyReceptacle.js';
 import { MyStem } from './MyStem.js';
+import { MyPollen } from './MyPollen.js';
 
 /**
  * MyFlower
@@ -67,6 +68,11 @@ export class MyFlower extends CGFobject {
                 this.leaveStems.push(new MyStem(scene, 8, stemRadius/6, this.stems[i].getHeight()/3));
             }
         }
+
+        this.pollen = new MyPollen(scene, 0.3, 10, 10);
+        this.pollenRotation = Math.random() * 2 * Math.PI;
+        this.hasPollen = true;
+
         this.initBuffers();
     }
 
@@ -84,6 +90,19 @@ export class MyFlower extends CGFobject {
 
     getYRotation(){ 
         return this.yRotation;
+    }
+
+
+    getPosition() {
+        return [this.posx, 4, this.posz];
+    }
+
+    givePollen() {
+        if (this.hasPollen) {
+            this.hasPollen = false;
+            return this.pollen; // Give pollen to the bee
+        }
+        return null;
     }
 
     display() {
@@ -154,6 +173,16 @@ export class MyFlower extends CGFobject {
         }
         this.scene.popMatrix();
 
+        // Display pollen
+        if(this.hasPollen) {
+            this.scene.pushMatrix();
+            this.scene.translate(dx - Math.sin(rotation) * this.receptacle.getHeight(), dy - Math.cos(rotation) * this.receptacle.getHeight(), 0);
+            this.scene.rotate(-rotation, 0, 0, 1);
+            this.scene.rotate(this.pollenRotation, 0, 1, 0); // Apply random rotation
+            this.pollen.display();
+            this.scene.popMatrix();
+        }
         
+
     }
 }

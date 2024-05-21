@@ -10,7 +10,7 @@ import { MyPanorama } from "./MyPanorama.js";
 import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MyBee } from "./MyBee.js";
-import { MyAnimation } from "./MyAnimation.js";
+import { MyHive } from "./MyHive.js";
 
 /**
  * MyScene
@@ -37,21 +37,23 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 1, 10, 10);
+    this.sphere = new MySphere(this, 1, 20, 20);
     this.rock = new MyRock(this, 1, 10, 10, "images/rock.jpg")
     this.rockSet = new MyRockSet(this, true);
     this.pyramid = new MyRockSet(this, false);
     this.bee = new MyBee(this);
+    this.hive = new MyHive(this);
 
 
     this.garden = new MyGarden(this, 5);
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displaySphere = false;
-    this.displayGarden = false;
+    this.displayGarden = true;
     this.displayRock = false;
-    this.displayRockPile = false;
-    this.displayRockPyramid = false;
+    this.displayRockPile = true;
+    this.displayRockPyramid = true;
+    this.displayBee = true;
     
     this.scaleFactor = 1;
 
@@ -104,26 +106,57 @@ export class MyScene extends CGFscene {
     if (this.gui.isKeyPressed("KeyW")) {
         // Accelerate forward
         this.bee.accelerate(this.speedFactor * 0.0005);
+        this.gui.lastKeyPressed = "W";
     } else if (this.gui.isKeyPressed("KeyS")) {
         // Decelerate or brake
         this.bee.accelerate(-this.speedFactor * 0.001);
+        this.gui.lastKeyPressed = "S";
     }
 
     if (this.gui.isKeyPressed("KeyA")) {
         // Turn left
         this.bee.turn(this.speedFactor * 0.1);
+        this.gui.lastKeyPressed = "A";
     } else if (this.gui.isKeyPressed("KeyD")) {
         // Turn right
         this.bee.turn(-this.speedFactor * 0.1);
+        this.gui.lastKeyPressed = "D";
     }
 
     if (this.gui.isKeyPressed("KeyR")) {
         // Reset bee's position and speed
-        this.bee.position = [0, 3, 0];
+        this.bee.position = [0, 10, 0];
         this.bee.orientation = 0;
         this.bee.velocity = [0, 0, 0];
+        this.bee.targetPosition = null;
+        this.bee.carryingPollen = null;
+        this.bee.reachedFlower = false;
+        this.bee.hasPollen = false;
+        this.gui.lastKeyPressed = "R";
     }
-}
+
+    if (this.gui.isKeyPressed("KeyF")) {
+      // Pick pollen
+      if(this.lastKeyPressed != "F") {
+        console.log("checkpoint 1: F pressed");
+        this.bee.pickPollen(this.garden);
+        this.gui.lastKeyPressed = "F";
+      }  
+    }
+
+    if (this.gui.isKeyPressed("KeyP")) {
+        // Carry pollen
+        console.log("checkpoint 1: P pressed");
+        this.bee.ascendInitialHeight();
+        this.gui.lastKeyPressed = "P";
+    }
+
+    if (this.gui.isKeyPressed("KeyO")) {
+        // Drop pollen at hive
+        this.bee.flyToHive(this.hive);
+        this.gui.lastKeyPressed = "O";
+    }
+  }
 
   update(t) {
 
@@ -146,7 +179,7 @@ export class MyScene extends CGFscene {
       1.0,
       0.1,
       1000,
-      vec3.fromValues(50, 10, 15),
+      vec3.fromValues(30, 50, 5),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -173,11 +206,11 @@ export class MyScene extends CGFscene {
     
     //plane
     this.pushMatrix();
-    this.translate(0,-10,0);
+    //this.translate(0,-10,0);
     if(this.displayGarden){
       this.garden.display();
     }
-    this.scale(400,400,400);
+    this.scale(350,350,350);
     this.rotate(-Math.PI/2.0,1,0,0);
     this.planeAppearance.apply();
     this.plane.display();
@@ -206,6 +239,7 @@ export class MyScene extends CGFscene {
     //rock pile set
     if(this.displayRockPile) {
       this.pushMatrix();
+      this.translate(6, 0.5, -30);
       this.rockSet.display();
       this.popMatrix();
     }
@@ -214,14 +248,22 @@ export class MyScene extends CGFscene {
     // rock pyramid set
     if(this.displayRockPyramid) {
       this.pushMatrix();
+      this.translate(-35, 0.5, 12);
       this.pyramid.display();
       this.popMatrix();
     }
 
+    if(this.displayBee) {
+      this.pushMatrix();
+      this.translate(0,this.animVal2,0);
+      this.bee.display();
+      this.popMatrix();
+    }
+
     this.pushMatrix();
-    this.translate(0,this.animVal2,0);
-    this.bee.display();
-    this.popMatrix();
+    this.translate(6, 7.5, -30)
+    this.hive.display();
+    this.popMatrix()
 
     // ---- END Primitive drawing section
   }
