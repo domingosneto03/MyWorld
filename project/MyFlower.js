@@ -73,6 +73,8 @@ export class MyFlower extends CGFobject {
         this.pollenRotation = Math.random() * 2 * Math.PI;
         this.hasPollen = true;
 
+        this.height = 0;
+
         this.initBuffers();
     }
 
@@ -84,8 +86,15 @@ export class MyFlower extends CGFobject {
         return this.posz;
     }
 
-    getGardenPos(){
-        return [10 * this.gridPosX + this.posx, 10 * this.gridPosY + this.posz];
+    getGardenPos() {
+        var x = 10 * this.gridPosX + this.posx;
+        var z = 10 * this.gridPosZ + this.posz;
+        var y = this.height;
+        return [x, y, z];
+    }
+
+    getHeight(){
+        return this.height;
     }
 
     getYRotation(){ 
@@ -149,6 +158,8 @@ export class MyFlower extends CGFobject {
             dx += Math.sin(rotation) * this.stems[i].getHeight();
             dy += Math.cos(rotation) * this.stems[i].getHeight();
         }
+
+        this.height = dy;
         
         //Receptacle
         this.receptacleColor.apply();
