@@ -211,6 +211,7 @@ export class MyScene extends CGFscene {
     if(this.displaySphere) {
       this.pushMatrix();
       this.sphereAppearance.apply();
+      this.translate(0, 15, 0);
       this.sphere.display();
       this.popMatrix();
     }
@@ -219,6 +220,7 @@ export class MyScene extends CGFscene {
     if(this.displayRock) {
       this.pushMatrix();
       this.scale(1.5, 0.8, 2);
+      this.translate(0, 15, 0);
       this.rock.display();
       this.popMatrix();
     }
