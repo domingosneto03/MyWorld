@@ -1,4 +1,4 @@
-import { CGFappearance, CGFobject, CGFtexture } from '../lib/CGF.js';
+import { CGFappearance, CGFobject, CGFtexture, CGFshader } from '../lib/CGF.js';
 import { MyGrass } from './MyGrass.js';
 
 /**
@@ -7,25 +7,26 @@ import { MyGrass } from './MyGrass.js';
  * @param scene - Reference to MyScene object
  */
 export class MyGrassField extends CGFobject {
-    constructor(scene) {
+    constructor(scene, matrixSize = 50) {
         super(scene);
         this.scene = scene;
+        this.matrixSize = matrixSize;
         this.grass = [];
-        for(var i = 0; i < 50; i++){
-            for(var j = 0; j < 50; j++){
+        for(var i = 0; i < matrixSize; i++){
+            for(var j = 0; j < matrixSize; j++){
                 this.grass.push(new MyGrass(scene, Math.random() * Math.PI, Math.random() * 0.5 + 0.5, j, i));
             }
         }
-        this.grassTextures = new CGFtexture(scene, 'images/single_grass_texture.jpg');
-        this.grassAppearance = new CGFappearance(scene);
-        this.grassAppearance.setTexture(this.grassTextures);
+        this.grassShader = new CGFshader(this.scene.gl, "grass_shader.vert", "grass_shader.frag");
         this.initBuffers();
     }
 
     display(){
+        this.grassShader.setUniformsValues({timeFactor: Math.cos(Date.now() / 750)});
+        this.scene.setActiveShader(this.grassShader);
+        this.scene.setDiffuse(0.0, 0.9, 0.0, 1.0);
         this.scene.pushMatrix();
-        this.grassAppearance.apply();
-        this.scene.translate(-25, 0, -25);
+        this.scene.translate(-(this.matrixSize / 2), 0, -(this.matrixSize / 2));
         for(var i = 0; i < this.grass.length; i++){
             this.scene.pushMatrix();
             var pos = this.grass[i].getGridPos();
@@ -36,6 +37,7 @@ export class MyGrassField extends CGFobject {
             this.scene.popMatrix();
         }
         this.scene.popMatrix();
+        this.scene.setActiveShader(this.scene.defaultShader);
     }
 
 }

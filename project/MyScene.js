@@ -46,7 +46,7 @@ export class MyScene extends CGFscene {
 
 
     this.garden = new MyGarden(this, 5);
-    this.grassField = new MyGrassField(this);
+    this.grassField = new MyGrassField(this, 50);
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displaySphere = false;

@@ -1,4 +1,4 @@
-import { CGFobject } from "../lib/CGF.js";
+import { CGFobject, CGFtexture } from "../lib/CGF.js";
 import { MyFlower } from "./MyFlower.js";
 
 /**
@@ -10,6 +10,24 @@ export class MyGarden extends CGFobject {
     constructor(scene, matrixSize = 5) {
         super(scene);
         this.scene = scene;
+
+        this.petalTextures = [
+            new CGFtexture(this.scene, 'images/pinkPetal.jpg'),
+            new CGFtexture(this.scene, 'images/yellowPetal.webp'),
+            new CGFtexture(this.scene, 'images/bluePetal.jpg'),
+        ];
+        this.receptacleTexture = new CGFtexture(this.scene, 'images/receptacle2.jpg');
+        this.stemTextures = [
+            new CGFtexture(this.scene, 'images/stemTexture1.jpg'),
+            new CGFtexture(this.scene, 'images/stemTexture2.jpg'),
+            new CGFtexture(this.scene, 'images/stemTexture3.jpg'),
+        ];
+        this.leafTextures = [
+            new CGFtexture(this.scene, 'images/leaf1.jpg'),
+            new CGFtexture(this.scene, 'images/leaf2.jpg'),
+            new CGFtexture(this.scene, 'images/leaf3.jpg'),
+        ];
+
         this.matrixSize = matrixSize;
         this.flowers = [];
         for(var i = 0; i < matrixSize; i++){
@@ -26,7 +44,7 @@ export class MyGarden extends CGFobject {
                 var posx = Math.random() * 6 + 2;
                 var posz = Math.random() * 6 + 2;
                 var yRotation = Math.random() * 2 * Math.PI;
-                this.flowers.push(new MyFlower(scene, flowerRadius, nPetals, petalColor, receptacleRadius, receptacleColor, stemRadius, stemSize, stemColor, leaveColor, posx, posz, yRotation));
+                this.flowers.push(new MyFlower(scene, flowerRadius, nPetals, receptacleRadius, stemRadius, stemSize, posx, posz, yRotation, this.petalTextures[petalColor], this.receptacleTexture, this.stemTextures[stemColor], this.leafTextures[leaveColor]));
             }
         }
 
