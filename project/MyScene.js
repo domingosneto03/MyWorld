@@ -11,6 +11,7 @@ import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MyBee } from "./MyBee.js";
 import { MyAnimation } from "./MyAnimation.js";
+import { MyGrassField } from "./MyGrassField.js";
 
 /**
  * MyScene
@@ -45,6 +46,7 @@ export class MyScene extends CGFscene {
 
 
     this.garden = new MyGarden(this, 5);
+    this.grassField = new MyGrassField(this);
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displaySphere = false;
@@ -176,6 +178,7 @@ export class MyScene extends CGFscene {
     this.translate(0,-10,0);
     if(this.displayGarden){
       this.garden.display();
+      this.grassField.display();
     }
     this.scale(400,400,400);
     this.rotate(-Math.PI/2.0,1,0,0);
