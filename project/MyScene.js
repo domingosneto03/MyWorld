@@ -43,19 +43,16 @@ export class MyScene extends CGFscene {
     this.pyramid = new MyRockSet(this, false);
     this.bee = new MyBee(this);
     this.hive = new MyHive(this);
-
-
     this.garden = new MyGarden(this, 5);
+
     //Objects connected to MyInterface
-    this.displayAxis = true;
+    this.displayAxis = false;
     this.displaySphere = false;
     this.displayGarden = true;
     this.displayRock = false;
     this.displayRockPile = true;
     this.displayRockPyramid = true;
     this.displayBee = true;
-    
-    this.scaleFactor = 1;
 
     this.enableTextures(true);
 
@@ -81,12 +78,11 @@ export class MyScene extends CGFscene {
     this.rock.setPosition(0,0,0);
 
     // animation
-    this.setUpdatePeriod(50); // **at least** 50 ms between animations
+    this.setUpdatePeriod(50);
 
     this.appStartTime=Date.now(); // current time in milisecs
 
-    this.animVal1=0;
-    this.animVal2=0;
+    this.animVal=0;
 
     this.startVal=0;
     this.endVal=0.5;
@@ -94,7 +90,6 @@ export class MyScene extends CGFscene {
     this.animDurationSecs=1;
     this.length=(this.endVal-this.startVal);
 
-    //this.animatedBee = new MyAnimation(this,0,5,1,3);
     this.speedFactor = 1.0;
     this.scaleFactor = 1.0;
     
@@ -104,68 +99,60 @@ export class MyScene extends CGFscene {
     
     // Check for key presses
     if (this.gui.isKeyPressed("KeyW")) {
-        // Accelerate forward
         this.bee.accelerate(this.speedFactor * 0.0005);
         this.gui.lastKeyPressed = "W";
+
     } else if (this.gui.isKeyPressed("KeyS")) {
-        // Decelerate or brake
         this.bee.accelerate(-this.speedFactor * 0.001);
         this.gui.lastKeyPressed = "S";
     }
 
     if (this.gui.isKeyPressed("KeyA")) {
-        // Turn left
         this.bee.turn(this.speedFactor * 0.1);
         this.gui.lastKeyPressed = "A";
+
     } else if (this.gui.isKeyPressed("KeyD")) {
-        // Turn right
         this.bee.turn(-this.speedFactor * 0.1);
         this.gui.lastKeyPressed = "D";
     }
 
     if (this.gui.isKeyPressed("KeyR")) {
-        // Reset bee's position and speed
         this.bee.position = [0, 10, 0];
         this.bee.orientation = 0;
         this.bee.velocity = [0, 0, 0];
         this.bee.targetPosition = null;
         this.bee.carryingPollen = null;
         this.bee.reachedFlower = false;
+        this.bee.reachedHive = false;
         this.bee.hasPollen = false;
+        this.bee.lastRandIdx = this.bee.getRandom(0,24);
         this.gui.lastKeyPressed = "R";
     }
 
     if (this.gui.isKeyPressed("KeyF")) {
-      // Pick pollen
       if(this.lastKeyPressed != "F") {
-        console.log("checkpoint 1: F pressed");
         this.bee.pickPollen(this.garden);
         this.gui.lastKeyPressed = "F";
       }  
     }
 
     if (this.gui.isKeyPressed("KeyP")) {
-        // Carry pollen
-        console.log("checkpoint 1: P pressed");
         this.bee.ascendInitialHeight();
         this.gui.lastKeyPressed = "P";
     }
 
     if (this.gui.isKeyPressed("KeyO")) {
-        // Drop pollen at hive
         this.bee.flyToHive(this.hive);
         this.gui.lastKeyPressed = "O";
     }
   }
 
-  update(t) {
-
-      // Continuous animation based on current time and app start time 
+  // Continuous animation based on current time and app start time
+  update(t) { 
       var timeSinceAppStart=(t-this.appStartTime)/1000.0;
-      this.animVal2 = Math.sin(timeSinceAppStart * Math.PI * 2 / this.animDurationSecs) * this.length / 2 + (this.startVal + this.endVal) / 2;
+      this.animVal = Math.sin(timeSinceAppStart * Math.PI * 2 / this.animDurationSecs) * this.length / 2 + (this.startVal + this.endVal) / 2;
       this.checkKeys();
-      this.bee.update(timeSinceAppStart, this.scaleFactor);
-
+      this.bee.update(timeSinceAppStart, this.scaleFactor, this.speedFactor);
   }
 
   initLights() {
@@ -174,6 +161,7 @@ export class MyScene extends CGFscene {
     this.lights[0].enable();
     this.lights[0].update();
   }
+
   initCameras() {
     this.camera = new CGFcamera(
       1.0,
@@ -183,12 +171,14 @@ export class MyScene extends CGFscene {
       vec3.fromValues(0, 0, 0)
     );
   }
+
   setDefaultAppearance() {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
   }
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -202,11 +192,9 @@ export class MyScene extends CGFscene {
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
-
     
     //plane
     this.pushMatrix();
-    //this.translate(0,-10,0);
     if(this.displayGarden){
       this.garden.display();
     }
@@ -227,7 +215,6 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
 
-    
     //single rock
     if(this.displayRock) {
       this.pushMatrix();
@@ -244,8 +231,7 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
 
-
-    // rock pyramid set
+    //rock pyramid set
     if(this.displayRockPyramid) {
       this.pushMatrix();
       this.translate(-35, 0.5, 12);
@@ -253,13 +239,15 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
 
+    //bee
     if(this.displayBee) {
       this.pushMatrix();
-      this.translate(0,this.animVal2,0);
+      this.translate(0,this.animVal,0);
       this.bee.display();
       this.popMatrix();
     }
 
+    //hive
     this.pushMatrix();
     this.translate(6, 7.5, -30)
     this.hive.display();
