@@ -171,8 +171,8 @@ export class MyBee extends CGFobject {
                 target[2] - this.position[2]
             ]
 
-            this.orientation = Math.atan2(direction[0], direction[2]) + Math.PI / 2;
             var distance = Math.sqrt(direction[0] ** 2 + direction[1] ** 2 + direction[2] ** 2);
+            this.orientation = Math.atan2(-direction[0]/distance, -direction[2]/distance);
             const descendSpeed = 0.02;
 
             if (distance > 0.5) {
@@ -211,8 +211,8 @@ export class MyBee extends CGFobject {
                 hivePosition[2] - this.position[2]
             ]
 
-            this.orientation = Math.atan2(direction[0], direction[2]) + Math.PI / 2;
             var distance = Math.sqrt(direction[0] ** 2 + direction[1] ** 2 + direction[2] ** 2);
+            this.orientation = Math.atan2(-direction[0]/distance, -direction[2]/distance);
             const flySpeed = 0.02;
 
             if (distance > 0.1) {
