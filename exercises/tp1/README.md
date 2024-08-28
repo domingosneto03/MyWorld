@@ -8,4 +8,4 @@
   
 - In exercise 2 we applied the same logic as exercise 1.
 
-![Screenshot 1](tp1/screenshots/CG-t03g08-tp1-1.png)
+![Screenshot 1](screenshots/CG-t03g08-tp1-1.png)
