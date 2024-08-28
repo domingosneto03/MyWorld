@@ -4,6 +4,6 @@ In exercise 2 we created the class MyUnitCube that defined 8 vertices of the cub
 
 In exercise 3 we observed that it is possible to make a complex Object just by invoking the same Object multiple times and making the necessary transformations to it.
 
-![Screenshot 1](tp2/screenshots/cg-t03g08-tp2-1.png)
-![Screenshot 2](tp2/screenshots/cg-t03g08-tp2-2.png)
-![Screenshot 3](tp2/screenshots/cg-t03g08-tp2-3.png)
+![Screenshot 1](screenshots/cg-t03g08-tp2-1.png)
+![Screenshot 2](screenshots/cg-t03g08-tp2-2.png)
+![Screenshot 3](screenshots/cg-t03g08-tp2-3.png)
